@@ -25,4 +25,5 @@ docs/capturas/
 # Sistema
 .DS_Store
 Thumbs.db
-*.bak-*`n*.pre-*
+*.bak-*
+*.pre-*
