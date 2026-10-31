@@ -1,0 +1,473 @@
+{
+  "jobs": [],
+  "version": 1,
+  "teams": [
+    {
+      "name": "Dirección",
+      "mission": "Estrategia, arquitectura, calidad y operación de personas.",
+      "id": "direccion"
+    },
+    {
+      "name": "Ingeniería",
+      "mission": "Producto, código, datos, integraciones y agentes.",
+      "id": "ingenieria"
+    },
+    {
+      "name": "Calidad y evidencia",
+      "mission": "Revisión independiente, seguridad, evidencia y rendimiento.",
+      "id": "calidad"
+    },
+    {
+      "name": "Operaciones",
+      "mission": "Confiabilidad, ledger y releases.",
+      "id": "operaciones"
+    }
+  ],
+  "source": "OrgDNA 24 · importado a Agenda Copilot",
+  "members": [
+    {
+      "team": "direccion",
+      "title": "CEO · Dirección",
+      "id": "planner",
+      "caps": [
+        "estrategia",
+        "priorización",
+        "delegación",
+        "gobierno",
+        "decisiones"
+      ],
+      "reportsTo": null,
+      "tools": [
+        "agenda",
+        "research",
+        "docs",
+        "studio"
+      ],
+      "mission": "Coordina la organización, prioriza el trabajo y toma decisiones dentro del mandato del Owner.",
+      "name": "Planner"
+    },
+    {
+      "team": "direccion",
+      "title": "Arquitectura",
+      "id": "architect",
+      "caps": [
+        "arquitectura",
+        "contratos",
+        "modelado",
+        "ADRs",
+        "revisión técnica"
+      ],
+      "reportsTo": "planner",
+      "tools": [
+        "docs",
+        "code",
+        "research"
+      ],
+      "mission": "Diseña fronteras, contratos, estados e invariantes antes de implementar.",
+      "name": "Architect"
+    },
+    {
+      "team": "direccion",
+      "title": "Aseguramiento y calidad",
+      "id": "qa",
+      "caps": [
+        "pruebas",
+        "calidad",
+        "cobertura",
+        "regresión",
+        "evidencia"
+      ],
+      "reportsTo": "planner",
+      "tools": [
+        "code",
+        "browser",
+        "docs"
+      ],
+      "mission": "Convierte requisitos en cobertura de pruebas y verifica el candidato exacto.",
+      "name": "QA"
+    },
+    {
+      "team": "direccion",
+      "title": "Operaciones de personas",
+      "id": "personalops",
+      "caps": [
+        "operaciones",
+        "agenda",
+        "accesos",
+        "coordinación"
+      ],
+      "reportsTo": "planner",
+      "tools": [
+        "agenda",
+        "docs",
+        "studio"
+      ],
+      "mission": "Cuida la operación del equipo, accesos, agenda y bienestar operativo.",
+      "name": "PersonalOps"
+    },
+    {
+      "team": "ingenieria",
+      "title": "Implementación",
+      "id": "implementer",
+      "caps": [
+        "programación",
+        "refactor",
+        "pruebas",
+        "entrega"
+      ],
+      "reportsTo": "architect",
+      "tools": [
+        "code",
+        "docs"
+      ],
+      "mission": "Convierte diseños aprobados en cambios pequeños, reversibles y probados.",
+      "name": "Implementer"
+    },
+    {
+      "team": "ingenieria",
+      "title": "Backend",
+      "id": "backend",
+      "caps": [
+        "backend",
+        "APIs",
+        "datos",
+        "seguridad",
+        "rendimiento"
+      ],
+      "reportsTo": "architect",
+      "tools": [
+        "code",
+        "docs"
+      ],
+      "mission": "Construye APIs, servicios, persistencia e integraciones robustas.",
+      "name": "Backend"
+    },
+    {
+      "team": "ingenieria",
+      "title": "Frontend",
+      "id": "frontend",
+      "caps": [
+        "frontend",
+        "UX",
+        "accesibilidad",
+        "rendimiento",
+        "motion"
+      ],
+      "reportsTo": "architect",
+      "tools": [
+        "code",
+        "browser",
+        "docs"
+      ],
+      "mission": "Diseña interfaces claras, accesibles y rápidas.",
+      "name": "Frontend"
+    },
+    {
+      "team": "ingenieria",
+      "title": "Datos",
+      "id": "data",
+      "caps": [
+        "datos",
+        "SQL",
+        "métricas",
+        "calidad de datos"
+      ],
+      "reportsTo": "implementer",
+      "tools": [
+        "code",
+        "docs"
+      ],
+      "mission": "Modela, valida y explica datos con evidencia reproducible.",
+      "name": "Data"
+    },
+    {
+      "team": "ingenieria",
+      "title": "Integraciones",
+      "id": "integration",
+      "caps": [
+        "integraciones",
+        "APIs",
+        "webhooks",
+        "resiliencia"
+      ],
+      "reportsTo": "implementer",
+      "tools": [
+        "code",
+        "docs"
+      ],
+      "mission": "Conecta servicios externos con contratos claros y manejo de fallos.",
+      "name": "Integration"
+    },
+    {
+      "team": "ingenieria",
+      "title": "Contratos",
+      "id": "contracts",
+      "caps": [
+        "contratos",
+        "riesgo",
+        "cumplimiento",
+        "revisión"
+      ],
+      "reportsTo": "implementer",
+      "tools": [
+        "docs",
+        "research"
+      ],
+      "mission": "Revisa acuerdos, condiciones y riesgos contractuales.",
+      "name": "Contracts"
+    },
+    {
+      "team": "ingenieria",
+      "title": "Quant",
+      "id": "quant",
+      "caps": [
+        "matemática",
+        "modelos",
+        "riesgo",
+        "simulación"
+      ],
+      "reportsTo": "backend",
+      "tools": [
+        "code",
+        "docs"
+      ],
+      "mission": "Analiza modelos, métricas y supuestos cuantitativos.",
+      "name": "Quant"
+    },
+    {
+      "team": "ingenieria",
+      "title": "Grafos y routing",
+      "id": "graphrouting",
+      "caps": [
+        "grafos",
+        "optimización",
+        "routing",
+        "algoritmos"
+      ],
+      "reportsTo": "backend",
+      "tools": [
+        "code"
+      ],
+      "mission": "Resuelve rutas, dependencias y optimización sobre grafos.",
+      "name": "GraphRouting"
+    },
+    {
+      "team": "ingenieria",
+      "title": "Microestructura",
+      "id": "market",
+      "caps": [
+        "mercados",
+        "liquidez",
+        "ejecución",
+        "riesgo"
+      ],
+      "reportsTo": "backend",
+      "tools": [
+        "code",
+        "research"
+      ],
+      "mission": "Estudia liquidez, ejecución y comportamiento de mercado.",
+      "name": "MarketMicrostructure"
+    },
+    {
+      "team": "ingenieria",
+      "title": "Ingeniería de IA",
+      "id": "aiengineering",
+      "caps": [
+        "IA",
+        "prompts",
+        "agentes",
+        "evaluación",
+        "automatización"
+      ],
+      "reportsTo": "frontend",
+      "tools": [
+        "code",
+        "docs",
+        "studio"
+      ],
+      "mission": "Diseña agentes, prompts, evaluaciones y automatizaciones confiables.",
+      "name": "AIEngineering"
+    },
+    {
+      "team": "calidad",
+      "title": "Revisión independiente",
+      "id": "reviewer",
+      "caps": [
+        "revisión",
+        "evidencia",
+        "contraejemplos",
+        "calidad"
+      ],
+      "reportsTo": "qa",
+      "tools": [
+        "docs",
+        "code"
+      ],
+      "mission": "Revisa entregables y verifica que las afirmaciones tengan evidencia.",
+      "name": "Reviewer"
+    },
+    {
+      "team": "calidad",
+      "title": "Seguridad",
+      "id": "security",
+      "caps": [
+        "seguridad",
+        "permisos",
+        "secretos",
+        "amenazas"
+      ],
+      "reportsTo": "qa",
+      "tools": [
+        "code",
+        "research"
+      ],
+      "mission": "Evalúa permisos, secretos, superficies de ataque y riesgos.",
+      "name": "Security"
+    },
+    {
+      "team": "calidad",
+      "title": "Auditoría de evidencia",
+      "id": "evidence",
+      "caps": [
+        "auditoría",
+        "hashes",
+        "ledger",
+        "trazabilidad"
+      ],
+      "reportsTo": "qa",
+      "tools": [
+        "docs",
+        "code"
+      ],
+      "mission": "Audita hashes, trazabilidad y consistencia de la evidencia.",
+      "name": "EvidenceAuditor"
+    },
+    {
+      "team": "calidad",
+      "title": "Especificación",
+      "id": "specification",
+      "caps": [
+        "requisitos",
+        "criterios",
+        "casos límite",
+        "documentación"
+      ],
+      "reportsTo": "reviewer",
+      "tools": [
+        "docs",
+        "code"
+      ],
+      "mission": "Traduce requisitos en criterios verificables y casos límite.",
+      "name": "Specification"
+    },
+    {
+      "team": "calidad",
+      "title": "Rendimiento",
+      "id": "performance",
+      "caps": [
+        "rendimiento",
+        "benchmarks",
+        "perfilado",
+        "capacidad"
+      ],
+      "reportsTo": "reviewer",
+      "tools": [
+        "code",
+        "docs"
+      ],
+      "mission": "Mide latencia, capacidad y costes con evidencia reproducible.",
+      "name": "Performance"
+    },
+    {
+      "team": "calidad",
+      "title": "E2E de navegador",
+      "id": "browsere2e",
+      "caps": [
+        "E2E",
+        "navegador",
+        "automatización",
+        "accesibilidad"
+      ],
+      "reportsTo": "frontend",
+      "tools": [
+        "browser",
+        "code"
+      ],
+      "mission": "Automatiza recorridos reales de la interfaz y sus fallos.",
+      "name": "BrowserE2E"
+    },
+    {
+      "team": "calidad",
+      "title": "Paridad de modos",
+      "id": "modeparity",
+      "caps": [
+        "paridad",
+        "matrices",
+        "contratos",
+        "verificación"
+      ],
+      "reportsTo": "frontend",
+      "tools": [
+        "code",
+        "docs"
+      ],
+      "mission": "Verifica que los modos de operación conserven contratos y límites.",
+      "name": "ModeParity"
+    },
+    {
+      "team": "operaciones",
+      "title": "Confiabilidad",
+      "id": "sre",
+      "caps": [
+        "SRE",
+        "observabilidad",
+        "respaldos",
+        "incidentes"
+      ],
+      "reportsTo": "personalops",
+      "tools": [
+        "code",
+        "docs"
+      ],
+      "mission": "Opera el servicio con salud, alertas, respaldo y recuperación.",
+      "name": "SRE"
+    },
+    {
+      "team": "operaciones",
+      "title": "Ledger y control",
+      "id": "ledger",
+      "caps": [
+        "ledger",
+        "auditoría",
+        "integridad",
+        "trazabilidad"
+      ],
+      "reportsTo": "personalops",
+      "tools": [
+        "docs",
+        "code"
+      ],
+      "mission": "Mantiene el registro append-only y verifica su integridad.",
+      "name": "Ledger"
+    },
+    {
+      "team": "operaciones",
+      "title": "Release",
+      "id": "release",
+      "caps": [
+        "release",
+        "despliegue",
+        "rollback",
+        "verificación"
+      ],
+      "reportsTo": "personalops",
+      "tools": [
+        "code",
+        "docs"
+      ],
+      "mission": "Prepara, autoriza y verifica publicaciones con rollback.",
+      "name": "Release"
+    }
+  ]
+}

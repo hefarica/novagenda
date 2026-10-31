@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check-test-smoke:
+    name: check + tests + smoke (Node 24)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Sintaxis de todos los módulos
+        run: npm run check
+      - name: Sin secretos en el repo
+        run: node scripts/check-secrets.mjs
+      - name: Suite + autocheques + guardia del dato real
+        run: npm test
+      - name: Smoke de 12 flujos críticos
+        run: npm run smoke
+
+  docker:
+    name: Docker no-root + healthcheck
+    runs-on: ubuntu-latest
+    needs: check-test-smoke
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: docker build -t agenda-copilot-p95:ci .
+      - name: Run y health
+        run: |
+          docker run -d --name agenda-ci \
+            -e APP_SECRET=ci-only-secret-not-real-0123456789 \
+            -e APP_SETUP_TOKEN=ci-setup-token \
+            -p 3123:3000 \
+            agenda-copilot-p95:ci
+          ok=0
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:3123/api/health >/dev/null 2>&1; then ok=1; break; fi
+            sleep 2
+          done
+          if [ "$ok" != "1" ]; then echo 'healthcheck falló'; docker logs agenda-ci; exit 1; fi
+          curl -fsS http://127.0.0.1:3123/api/health
+      - name: Logs si falla
+        if: failure()
+        run: docker logs agenda-ci || true
+      - name: Limpieza
+        if: always()
+        run: docker rm -f agenda-ci || true

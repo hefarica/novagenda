@@ -1,0 +1,28 @@
+# Secretos y datos locales
+.env
+.env.*
+!.env.example
+.master-key
+data/
+logs/
+*.log
+*.bak
+*.tmp
+*.pem
+*.key
+*.p12
+*.pfx
+*.sqlite
+*.sqlite3
+
+# Dependencias y artefactos
+node_modules/
+coverage/
+.cache/
+docs/capturas/
+*.zip
+
+# Sistema
+.DS_Store
+Thumbs.db
+*.bak-*`n*.pre-*

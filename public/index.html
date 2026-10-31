@@ -1,0 +1,1850 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" id="metaThemeColor" content="#FFFFFF" />
+  <meta name="color-scheme" content="dark light" />
+  <meta name="description" content="Agenda Copilot P95: agenda, rutinas, asistente e integraciones en una sola app local." />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Agenda Copilot" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="icon" href="/icons/icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="/theme-light.css" />
+<link rel="stylesheet" href="/motion.css" />
+<link rel="stylesheet" href="/studio.css" />
+  <script src="/js/theme-boot.js"></script>
+  <title>Agenda Copilot P95</title>
+</head>
+<body>
+  <a class="skip-link" href="#mainContent">Saltar al contenido</a>
+  <div class="ambient a1" aria-hidden="true"></div>
+  <div class="ambient a2" aria-hidden="true"></div>
+
+  <!-- ===================== Cajón de navegación ===================== -->
+  <aside id="drawer" class="drawer glass" aria-label="Navegación principal" aria-hidden="true">
+    <div class="drawer-head">
+      <b>Agenda Copilot P95</b>
+      <button type="button" class="icon-btn small" id="drawerClose" aria-label="Cerrar menú">×</button>
+    </div>
+    <nav class="drawer-nav">
+      <button type="button" data-nav="home">⌂ Inicio</button>
+      <button type="button" data-nav="agenda">▦ Agenda</button>
+      <button type="button" data-nav="routines">↻ Rutinas</button>
+      <button type="button" data-nav="tasks">☑ Tareas</button>
+      <button type="button" data-nav="rooms">▣ Salas</button>
+      <button type="button" data-nav="attendance">◷ Jornada</button>
+      <button type="button" data-nav="okr">◎ Objetivos</button>
+      <button type="button" data-nav="office">▣ Oficina</button>
+      <button type="button" data-nav="approvals">✓ Aprobaciones</button>
+      <button type="button" data-nav="moments">✦ Momentos</button>
+      <button type="button" data-nav="docs">▤ Documentos</button>
+      <button type="button" data-nav="wiki">❏ Wiki</button>
+      <button type="button" data-nav="base">▦ Base</button>
+      <button type="button" data-nav="lingo">◇ Léxico</button>
+      <button type="button" data-nav="identity">◉ Identidades</button>
+      <button type="button" data-nav="style">✎ Estilo</button>
+      <button type="button" data-nav="nudges">◔ Avisos</button>
+      <button type="button" data-nav="audit">◎ Auditoría</button>
+      <button type="button" data-nav="assistant">✦ Asistente</button>
+      <button type="button" data-nav="organization">◎ Organización</button>
+      <button type="button" data-nav="studio">✦ Estudio</button>
+      <button type="button" data-nav="workflows">⚙ Automatizaciones y señales</button>
+      <button type="button" data-nav="integrations">⛓ Integraciones</button>
+      <button type="button" data-nav="setup">⚡ Puesta en marcha</button>
+      <button type="button" data-nav="system">◎ Sistema P95</button>
+    </nav>
+    <div class="drawer-foot">
+      <label class="theme-picker" title="Tema de la interfaz">
+        <span class="sr-only">Tema de la interfaz</span>
+        <select data-theme-select id="themeSelectDrawer" aria-label="Tema de la interfaz">
+          <option value="dark">◐ Oscuro</option>
+          <option value="light">☀ Claro</option>
+          <option value="system">⚙ Sistema</option>
+        </select>
+      </label>
+      <button type="button" id="drawerWizard" class="ghost">? Guía de inicio</button>
+      <div id="drawerAuth"></div>
+      <p class="muted tiny" id="drawerVersion"></p>
+    </div>
+  </aside>
+  <div id="drawerShade" class="drawer-shade"></div>
+
+  <main class="shell" id="mainContent">
+    <!-- ===================== Banners ===================== -->
+    <div id="bannerStack" class="banner-stack" role="status" aria-live="polite"></div>
+
+    <!-- ===================== Barra superior ===================== -->
+    <header class="topbar">
+      <button type="button" class="icon-btn" id="menuBtn" aria-label="Abrir menú" aria-expanded="false" aria-controls="drawer">☰</button>
+      <div class="greeting">
+        <h1 id="hello">Buenos días 👋</h1>
+        <p id="todayLabel">Cargando tu panorama…</p>
+      </div>
+      <div class="top-actions">
+        <label class="theme-picker" title="Tema de la interfaz">
+          <span class="sr-only">Tema de la interfaz</span>
+          <select data-theme-select id="themeSelectTop" aria-label="Tema de la interfaz">
+            <option value="dark">◐ Oscuro</option>
+            <option value="light">☀ Claro</option>
+            <option value="system">⚙ Sistema</option>
+          </select>
+        </label>
+        <button type="button" class="icon-btn" id="searchBtn" aria-label="Buscar en la agenda" title="Buscar (/)">⌕</button>
+        <button type="button" class="icon-btn" id="queueBtn" aria-label="Cola sin conexión" title="Cola sin conexión">
+          ⇅<span class="dot" id="queueDot" hidden></span>
+        </button>
+        <button type="button" class="icon-btn" id="wizardBtn" aria-label="Abrir guía de inicio" title="Guía de inicio">?</button>
+      </div>
+    </header>
+
+    <!-- ===================== Inicio ===================== -->
+    <section id="view-home" class="view active" aria-labelledby="homeTitle">
+      <h2 class="sr-only" id="homeTitle">Inicio</h2>
+      <div class="grid hero-grid">
+        <article class="card glass score-card">
+          <div class="card-head"><h2>Índice P95</h2><span class="muted small" id="p95Stamp"></span></div>
+          <div class="score-wrap">
+            <div class="ring" id="p95Ring" role="img" aria-label="Índice P95">
+              <strong id="p95Value">—</strong><small>Índice P95</small>
+            </div>
+            <div class="score-legend">
+              <p id="p95Headline" class="score-headline">Calculando…</p>
+              <div id="p95Mini" class="mini-bars"></div>
+              <button type="button" class="ghost full" data-nav="system">Ver desglose de 7 componentes <b>›</b></button>
+            </div>
+          </div>
+        </article>
+        <section class="home-agent glass card" id="homeAgentPanel" aria-labelledby="homeAgentTitle">
+          <div class="ha-orb" aria-hidden="true"><span></span></div>
+          <div class="ha-content">
+            <div class="ha-head">
+              <div>
+                <p class="ha-eyebrow">CAMILA · JEFA DE GABINETE</p>
+                <h2 id="homeAgentTitle">Háblame. Estoy en tu oficina.</h2>
+              </div>
+              <div class="ha-head-actions">
+                <span class="ha-live"><i></i> en línea</span>
+                <button type="button" id="homeAgentCollapse" class="ha-collapse" aria-expanded="true" aria-controls="homeAgentLog" aria-label="Contraer panel de Camila">−</button>
+              </div>
+            </div>
+            <div class="ha-log" id="homeAgentLog" aria-live="polite" aria-atomic="false"></div>
+            <form class="ha-form" id="homeAgentForm" autocomplete="off">
+              <button type="button" class="ha-mic" id="homeAgentMic" aria-label="Hablar con Camila" aria-pressed="false" title="Hablar o dictar (Whisper local)">
+                <span class="ha-mic-icon" aria-hidden="true">🎙</span>
+              </button>
+              <label class="sr-only" for="homeAgentInput">Mensaje para Camila</label>
+              <input id="homeAgentInput" name="message" maxlength="2000" placeholder="Dile algo a Camila…" autocomplete="off" />
+              <button type="submit" class="ha-send">Enviar</button>
+            </form>
+            <div class="ha-foot">
+              <span id="homeAgentStatus" class="home-agent-status" role="status" hidden></span>
+              <div class="ha-chips" aria-label="Sugerencias">
+                <button type="button" class="ha-chip" data-ha-prompt="¿Qué tengo hoy?">¿Qué tengo hoy?</button>
+                <button type="button" class="ha-chip" data-ha-prompt="Dame el balance del día">Balance</button>
+                <button type="button" class="ha-chip" data-ha-prompt="¿Cuál es el siguiente paso más importante?">Siguiente paso</button>
+              </div>
+            </div>
+            <details class="ha-top3" id="homeTop3">
+              <summary>Top 3 de hoy <span class="muted small">por prioridad</span></summary>
+              <div id="top3List" class="top3-list"></div>
+            </details>
+          </div>
+        </section>
+      </div>
+
+      <div class="grid two-col">
+        <article class="card glass">
+          <div class="card-head"><h2>Hoy</h2><span id="todayMeta" class="muted small"></span></div>
+          <div id="todayList" class="event-list"></div>
+          <button type="button" class="ghost full" id="homeNewEvent">＋ Nueva cita <b>›</b></button>
+        </article>
+        <article class="card glass">
+          <div class="card-head"><h2>Resumen del día</h2></div>
+          <div id="dayStats" class="stat-grid"></div>
+          <div id="daySuggestions" class="suggestions"></div>
+        </article>
+      </div>
+
+      <div class="grid two-col">
+        <article class="card glass">
+          <div class="card-head"><h2>Captura rápida</h2><span id="queueChip" class="tag" hidden></span></div>
+          <p class="muted small">Lo que no quieres perder ahora y procesarás luego. Funciona sin conexión.</p>
+          <form id="captureForm" class="capture-form">
+            <label class="sr-only" for="captureInput">Captura rápida</label>
+            <input id="captureInput" name="input" maxlength="2000" required placeholder="Ej.: revisar contrato con Ana" autocomplete="off" />
+            <button type="submit" class="primary">Capturar</button>
+          </form>
+          <div id="inboxPreview" class="system-list"></div>
+        </article>
+        <article class="card glass">
+          <div class="card-head"><h2>Rutinas de hoy</h2><span id="routineTodayMeta" class="muted small"></span></div>
+          <div id="routineToday" class="system-list"></div>
+          <button type="button" class="ghost full" data-nav="routines">Gestionar rutinas <b>›</b></button>
+        </article>
+      </div>
+
+      <div class="grid two-col">
+        <article class="card glass">
+          <div class="card-head"><h2>Integraciones</h2><span class="muted small" id="integrationsMeta"></span></div>
+          <div id="integrationsSummary" class="integration-list"></div>
+          <button type="button" class="primary full" data-nav="setup">⚡ Puesta en marcha asistida <b>›</b></button>
+          <button type="button" class="ghost full" data-nav="integrations">Gestionar integraciones <b>›</b></button>
+        </article>
+        <article class="card glass">
+          <div class="card-head"><h2>Actividad reciente</h2></div>
+          <div id="activityList" class="activity-list"></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===================== Agenda ===================== -->
+    <section id="view-agenda" class="view" aria-labelledby="agendaTitle">
+      <div class="section-title">
+        <div><h2 id="agendaTitle">Agenda</h2><p>Una sola fuente de compromisos con fecha y hora. Edita, completa, pospone o cancela.</p></div>
+        <div class="head-actions"><button type="button" class="ghost small" id="agendaPrintBtn" title="Imprimir o guardar como PDF">Imprimir / PDF</button><button type="button" class="ghost small" id="agendaIcsBtn" title="Descargar copia .ics para Google Calendar, Outlook o Apple">Exportar ICS</button><button type="button" class="primary" id="agendaNewBtn">＋ Nueva cita</button></div>
+      </div>
+
+      <div class="card glass toolbar">
+        <label class="search">
+          <span class="sr-only">Buscar citas por título</span>
+          <input id="agendaSearch" type="search" placeholder="Buscar por título, contexto o nota…" autocomplete="off" />
+        </label>
+        <div class="filters" role="group" aria-label="Filtros de agenda">
+          <button type="button" class="chip active" data-filter="all" aria-pressed="true">Todas</button>
+          <button type="button" class="chip" data-filter="today" aria-pressed="false">Hoy</button>
+          <button type="button" class="chip" data-filter="tomorrow" aria-pressed="false">Mañana</button>
+          <button type="button" class="chip" data-filter="week" aria-pressed="false">Semana</button>
+          <button type="button" class="chip" data-filter="p1" aria-pressed="false">P1</button>
+          <button type="button" class="chip" data-filter="focus" aria-pressed="false">Foco</button>
+          <button type="button" class="chip" data-filter="pending" aria-pressed="false">Pendientes</button>
+          <button type="button" class="chip" data-filter="done" aria-pressed="false">Hechas</button>
+          <button type="button" class="chip" data-filter="cancelled" aria-pressed="false">Canceladas</button>
+        </div>
+        <div class="segmented" role="group" aria-label="Modo de vista">
+          <button type="button" data-view-mode="list" class="active" aria-pressed="true">Lista</button>
+          <button type="button" data-view-mode="week" aria-pressed="false">Semana</button>
+          <button type="button" data-view-mode="travel" aria-pressed="false">Viajes</button>
+        </div>
+      </div>
+
+      <div class="print-only" id="agendaPrintHead"><h1>Agenda</h1><p id="agendaPrintStamp"></p></div>
+
+      <div id="agendaList" class="agenda-list"></div>
+
+      <section id="agendaWeek" class="card glass week-wrap" hidden aria-label="Vista semanal">
+        <div class="week-nav">
+          <button type="button" class="icon-btn small" id="weekPrev" aria-label="Semana anterior">‹</button>
+          <b id="weekLabel">Semana</b>
+          <button type="button" class="icon-btn small" id="weekNext" aria-label="Semana siguiente">›</button>
+          <button type="button" class="ghost small" id="weekToday">Hoy</button>
+          <span class="muted small" id="weekMeta"></span>
+        </div>
+        <div id="weekGrid" class="week-grid"></div>
+      </section>
+
+      <section id="agendaTravel" class="travel-wrap" hidden aria-label="Viajes y lugares">
+        <div class="grid two-col">
+          <article class="card glass">
+            <div class="card-head"><h3>¿Llego a tiempo?</h3><span class="muted small">Tráfico, margen y alternativas reales</span></div>
+            <form id="travelPlanForm" class="form-grid">
+              <div class="two">
+                <label class="field"><span>Desde *</span><input name="from" required maxlength="200" placeholder="Oficina Cali" autocomplete="off" /></label>
+                <label class="field"><span>Hasta *</span><input name="to" required maxlength="200" placeholder="Palmira" autocomplete="off" /></label>
+              </div>
+              <div class="two">
+                <label class="field"><span>Salgo</span><input name="fromAt" type="datetime-local" /></label>
+                <label class="field"><span>Debo llegar</span><input name="toAt" type="datetime-local" /></label>
+              </div>
+              <label class="field"><span>Duración en destino (min)</span><input name="durationMin" type="number" min="15" max="600" step="15" value="60" /></label>
+              <button type="submit" class="primary">Calcular viaje</button>
+            </form>
+            <div id="travelPlanResult" class="travel-result" aria-live="polite"></div>
+          </article>
+          <article class="card glass">
+            <div class="card-head"><h3>Lugares guardados</h3><button type="button" class="ghost small" id="travelPlaceNew">＋ Añadir lugar</button></div>
+            <p class="muted small">Los lugares alimentan el autocompletado del campo «Lugar» en las citas.</p>
+            <div id="travelPlaces" class="places-list"></div>
+          </article>
+        </div>
+      </section>
+    </section>
+
+    <!-- ===================== Rutinas ===================== -->
+    <section id="view-routines" class="view" aria-labelledby="routinesTitle">
+      <div class="section-title">
+        <div><h2 id="routinesTitle">Rutinas</h2><p>Tu sistema operativo diario: se generan solas en la agenda y puedes saltarte un día.</p></div>
+        <div class="head-actions">
+          <button type="button" class="ghost small" id="routinePrintBtn" title="Imprimir o guardar el listado como PDF">Imprimir / PDF</button>
+          <button type="button" class="secondary" id="routineBaseBtn">⚡ Cargar rutina P95 base</button>
+          <button type="button" class="primary" id="routineNewBtn">＋ Nueva rutina</button>
+        </div>
+      </div>
+
+      <article class="card glass nl-card">
+        <div class="card-head"><h3>Escríbela como se la dirías a alguien</h3><span class="tag" id="nlEngineTag">Interpretación local</span></div>
+        <p class="muted small">Ejemplo: «Todos los laborables a las 7:30, 90 minutos de foco profundo para avanzar el objetivo principal, aviso 10 minutos antes».</p>
+        <form id="routineNlForm" class="nl-form">
+          <label class="sr-only" for="routineNlText">Describe tu rutina con tus palabras</label>
+          <textarea id="routineNlText" rows="2" maxlength="500" placeholder="Descríbela con tus palabras…"></textarea>
+          <button type="submit" class="primary" id="routineNlBtn">Interpretar</button>
+        </form>
+        <p id="routineNlStatus" class="hint" role="status"></p>
+      </article>
+
+      <div class="card glass toolbar">
+        <label class="search">
+          <span class="sr-only">Buscar rutinas</span>
+          <input id="routineSearch" type="search" placeholder="Buscar rutina por nombre o nota…" autocomplete="off" />
+        </label>
+        <div class="filters" role="group" aria-label="Filtros de rutinas">
+          <button type="button" class="chip active" data-routine-filter="all" aria-pressed="true">Todas</button>
+          <button type="button" class="chip" data-routine-filter="recurrence" aria-pressed="false">Recurrentes</button>
+          <button type="button" class="chip" data-routine-filter="meeting" aria-pressed="false">Reuniones</button>
+          <button type="button" class="chip" data-routine-filter="paused" aria-pressed="false">Pausadas</button>
+        </div>
+      </div>
+
+      <div class="print-only" id="routinesPrintHead"><h1>Rutinas</h1><p id="routinesPrintStamp"></p></div>
+      <div id="routinesList" class="routines-list"></div>
+    </section>
+
+    <!-- ===================== Tareas y compromisos ===================== -->
+    <section id="view-tasks" class="view" aria-labelledby="tasksTitle">
+      <div class="section-title">
+        <div><h2 id="tasksTitle">Tareas y compromisos</h2><p>Lo que quedó pendiente de un chat, un correo o un acta. Edita, cierra, reabre o elimina sin salir.</p></div>
+        <div class="head-actions"><button type="button" class="ghost small" id="taskPrintBtn" title="Imprimir o guardar la lista como PDF">Imprimir / PDF</button><button type="button" class="ghost small" id="taskExportCsv" title="Descargar las tareas filtradas en CSV">Exportar CSV</button><button type="button" class="primary small" id="taskNewBtn">＋ Nueva tarea</button></div>
+      </div>
+      <article class="card glass">
+        <div class="card-head"><h3>Listado</h3><span id="tasksMeta" class="tag">—</span></div>
+        <div class="card-body">
+          <div class="print-only" id="tasksPrintHead"><h1>Tareas y compromisos</h1><p id="tasksPrintStamp"></p></div>
+          <form id="taskForm" class="form-grid" hidden>
+            <label class="field"><span>Título *</span><input name="title" required maxlength="160" placeholder="Ej. Enviar acta de liberación" /></label>
+            <label class="field"><span>Vence</span><input name="due" type="date" /></label>
+            <label class="field"><span>Prioridad</span><select name="priority"><option>P1</option><option selected>P2</option><option>P3</option><option>P4</option></select></label>
+            <label class="field"><span>Responsable</span><input name="owner" maxlength="120" placeholder="Héctor" /></label>
+            <label class="field wide"><span>Notas</span><input name="notes" maxlength="500" placeholder="Contexto breve" /></label>
+            <div class="row-actions"><button type="submit" class="primary small">Guardar tarea</button><button type="button" class="ghost small" id="taskFormCancel">Cancelar</button></div>
+          </form>
+          <div id="taskFilters" class="row-actions" role="group" aria-label="Filtrar tareas">
+            <button type="button" class="chip active" data-status="all" aria-pressed="true">Todas</button>
+            <button type="button" class="chip" data-status="open" aria-pressed="false">Abiertas</button>
+            <button type="button" class="chip" data-status="done" aria-pressed="false">Hechas</button>
+            <button type="button" class="chip" data-status="cancelled" aria-pressed="false">Canceladas</button>
+          </div>
+          <label class="field" id="taskSearchWrap"><span class="sr-only">Buscar tareas</span><input id="taskSearch" type="search" placeholder="Buscar por título, persona o nota…" maxlength="120" /></label>
+          <div id="taskList" class="stack" aria-live="polite"></div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ===================== Organización ===================== -->
+    <section id="view-organization" class="view" aria-labelledby="organizationTitle">
+      <div class="section-title">
+        <div><h2 id="organizationTitle">Organización</h2><p>Tu equipo de agentes: equipos, perfiles, jerarquía y capacidades. Los permisos reales siguen pasando por aprobación.</p></div>
+        <div class="head-actions">
+          <button type="button" class="ghost small" id="orgImportBtn">Importar OrgDNA</button>
+          <input type="file" id="orgImportFile" accept="application/json,.json" hidden />
+          <button type="button" class="secondary small" id="orgNewTeam">＋ Equipo</button>
+          <button type="button" class="primary small" id="orgNewAgent">＋ Agente</button>
+        </div>
+      </div>
+      <div class="org-summary" id="orgSummary"></div>
+      <div class="org-teams" id="orgTeams"></div>
+      <article class="card glass org-members-card">
+        <div class="card-head"><h3>Perfiles</h3><span class="muted small" id="orgMembersMeta"></span></div>
+        <div id="orgMembers" class="org-members"></div>
+      </article>
+
+      <dialog class="modal" id="dlg-org-agent" aria-labelledby="orgAgentDialogTitle">
+        <form method="dialog" id="orgAgentForm">
+          <div class="modal-head"><h3 id="orgAgentDialogTitle">Agente</h3><button type="button" class="icon-btn" data-close-dialog="dlg-org-agent" aria-label="Cerrar">×</button></div>
+          <div class="modal-body">
+            <input type="hidden" id="orgAgentId" />
+            <div class="form-grid">
+              <label class="field"><span>Nombre</span><input id="orgAgentName" maxlength="120" required /></label>
+              <label class="field"><span>Título / rol</span><input id="orgAgentTitle" maxlength="160" /></label>
+              <label class="field"><span>Equipo</span><select id="orgAgentTeam"></select></label>
+              <label class="field"><span>Reporta a</span><select id="orgAgentReports"></select></label>
+            </div>
+            <label class="field"><span>Misión</span><textarea id="orgAgentMission" rows="3" maxlength="800"></textarea></label>
+            <label class="field"><span>Capacidades (separadas por coma)</span><input id="orgAgentCaps" maxlength="1000" placeholder="presentaciones, investigación, código" /></label>
+            <label class="field"><span>Herramientas declaradas (coma)</span><input id="orgAgentTools" maxlength="1000" placeholder="docs, code, browser" /></label>
+          </div>
+          <div class="modal-actions"><button type="button" class="ghost" data-close-dialog="dlg-org-agent">Cancelar</button><button type="submit" class="primary">Guardar agente</button></div>
+        </form>
+      </dialog>
+
+      <dialog class="modal" id="dlg-org-team" aria-labelledby="orgTeamDialogTitle">
+        <form method="dialog" id="orgTeamForm">
+          <div class="modal-head"><h3 id="orgTeamDialogTitle">Equipo</h3><button type="button" class="icon-btn" data-close-dialog="dlg-org-team" aria-label="Cerrar">×</button></div>
+          <div class="modal-body">
+            <input type="hidden" id="orgTeamId" />
+            <label class="field"><span>Nombre</span><input id="orgTeamName" maxlength="120" required /></label>
+            <label class="field"><span>Misión</span><textarea id="orgTeamMission" rows="3" maxlength="600"></textarea></label>
+          </div>
+          <div class="modal-actions"><button type="button" class="ghost" data-close-dialog="dlg-org-team">Cancelar</button><button type="submit" class="primary">Guardar equipo</button></div>
+        </form>
+      </dialog>
+    </section>
+
+    <!-- ===================== Estudio ===================== -->
+    <section id="view-studio" class="view" aria-labelledby="studioTitle">
+      <div class="section-title">
+        <div><h2 id="studioTitle">Estudio</h2><p>Encarga trabajo a tu organización: presentaciones, documentos y proyectos de código con entregables descargables.</p></div>
+        <div class="head-actions"><button type="button" class="ghost small" data-nav="organization">Ver organización <b>›</b></button></div>
+      </div>
+      <div class="studio-layout">
+        <article class="card glass studio-brief">
+          <div class="card-head"><h3>Nuevo encargo</h3><span class="tag" id="studioEngine">Listo</span></div>
+          <label class="field"><span>Título (opcional)</span><input id="studioTitleInput" maxlength="200" placeholder="Ej.: Plan de crecimiento 2027" /></label>
+          <label class="field"><span>Brief para el equipo</span><textarea id="studioBrief" rows="6" maxlength="6000" required placeholder="Describe el objetivo, audiencia, restricciones y entregable que quieres. No inventes cifras: el equipo pedirá lo que falte."></textarea></label>
+          <div class="form-grid">
+            <label class="field"><span>Tipo</span><select id="studioType"><option value="presentation">Presentación PPTX</option><option value="document">Documento DOCX</option><option value="code">Proyecto de código (ZIP)</option></select></label>
+            <label class="field"><span>Equipo</span><select id="studioTeam"></select></label>
+            <label class="field"><span>Estilo</span><select id="studioStyle"><option value="ejecutivo">Ejecutivo</option><option value="creativo">Creativo</option><option value="datos">Datos y KPIs</option><option value="académico">Académico</option></select></label>
+            <label class="field"><span>Diapositivas</span><input id="studioSlides" type="number" min="6" max="12" value="10" /></label>
+          </div>
+          <label class="field"><span>Audiencia</span><input id="studioAudience" maxlength="200" placeholder="Dirección, cliente, inversionistas…" /></label>
+          <div class="row-actions">
+            <button type="button" class="primary" id="studioGenerate">Generar encargo</button>
+            <button type="button" class="ghost" id="studioClear">Limpiar</button>
+          </div>
+          <p class="hint">La generación usa el LLM configurado y escribe solo en el área local de la app. El código no se ejecuta.</p>
+        </article>
+        <article class="card glass studio-preview" id="studioPreview">
+          <div class="card-head"><h3>Vista previa</h3><span class="muted small" id="studioPreviewMeta"></span></div>
+          <div id="studioPreviewBody" class="studio-preview-body">
+            <p class="muted small">El guion de la presentación aparecerá aquí antes de descargar el PPTX.</p>
+          </div>
+        </article>
+      </div>
+      <article class="card glass studio-jobs-card">
+        <div class="card-head"><h3>Encargos</h3><span class="muted small" id="studioJobsMeta"></span></div>
+        <div id="studioJobs" class="studio-jobs"></div>
+      </article>
+    </section>
+
+    <!-- ===================== Asistente ===================== -->
+    <section id="view-assistant" class="view" aria-labelledby="assistantTitle">
+      <div class="section-title">
+        <div><h2 id="assistantTitle">Asistente</h2><p>Agenda, reprograma, captura y cierra en lenguaje natural. Muestra la traza de lo que ejecutó.</p></div>
+        <div class="head-actions"><button type="button" class="secondary small" id="composeOpenBtn">✉ Redactar correo</button><span id="assistantStatus" class="tag">Comprobando motor…</span></div>
+      </div>
+      <div class="assistant-layout">
+        <article class="card glass chat-card">
+          <div id="chat" class="chat" role="log" aria-live="polite" aria-label="Conversación con el asistente"></div>
+          <form id="chatForm" class="chat-input">
+            <button type="button" id="voiceBtn" class="orb" aria-label="Dictar por voz" title="Dictar por voz">🎙</button>
+            <label class="sr-only" for="chatText">Mensaje para el asistente</label>
+            <input id="chatText" autocomplete="off" maxlength="4000" placeholder="Ej.: agenda reunión mañana a las 10 por 45 min" />
+            <button type="submit" class="send" aria-label="Enviar mensaje">↑</button>
+          </form>
+          <div class="chat-foot">
+            <button type="button" class="ghost small" id="chatClear">Borrar conversación</button>
+            <label class="check small" id="voiceSpeakWrap"><input type="checkbox" id="voiceSpeakToggle" /> Leer respuestas en voz alta</label>
+            <span id="chatProvider" class="muted small"></span>
+          </div>
+        </article>
+        <aside class="assistant-side">
+          <article class="card glass">
+            <div class="card-head"><h3>Atajos</h3></div>
+            <div class="commands" id="quickCommands">
+              <button type="button" data-cmd="HOY">HOY</button>
+              <button type="button" data-cmd="CAPTURA revisar contrato con Ana">CAPTURA revisar contrato</button>
+              <button type="button" data-cmd="FOCO 90 preparar la junta">FOCO 90 preparar junta</button>
+              <button type="button" data-cmd="CIERRE">CIERRE</button>
+              <button type="button" data-cmd="SEMANA">SEMANA</button>
+              <button type="button" data-cmd="balance">balance</button>
+            </div>
+          </article>
+          <article class="card glass">
+            <div class="card-head"><h3>Acciones ejecutadas</h3><span class="muted small" id="actionsMeta"></span></div>
+            <div id="actionsTrace" class="trace-list"></div>
+          </article>
+          <article class="card glass">
+            <div class="card-head"><h3>Historial</h3><span class="muted small">Tus últimas peticiones</span></div>
+            <div id="chatHistory" class="history-list"></div>
+          </article>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ===================== Automatizaciones ===================== -->
+    <section id="view-workflows" class="view" aria-labelledby="wfTitle">
+      <div class="section-title">
+        <div><h2 id="wfTitle">Automatizaciones y señales</h2><p>Recetas diarias, horarias y por señales. Todo se puede probar en simulación sin enviar mensajes.</p></div>
+        <div class="head-actions"><button type="button" class="ghost small" id="wfRefresh">Actualizar</button></div>
+      </div>
+      <div id="automationBanner"></div>
+      <div class="grid two-col">
+        <article class="card glass">
+          <div class="card-head"><h3>Automatizaciones (workflows)</h3><span class="muted small" id="recipesMeta"></span></div>
+          <p class="muted small">Cada workflow tiene disparador, condiciones y acciones. «Probar ahora» siempre es una simulación: no envía mensajes.</p>
+          <div id="recipesList" class="recipe-list"></div>
+        </article>
+        <div class="stack">
+          <article class="card glass">
+            <div class="card-head"><h3>Historial de ejecuciones</h3><span class="muted small" id="runsMeta"></span></div>
+            <div id="runsList" class="system-list"></div>
+          </article>
+          <article class="card glass">
+            <div class="card-head"><h3>Señales</h3><span class="muted small" id="signalsMeta"></span></div>
+            <div class="filters" role="group" aria-label="Filtros de señales" id="signalFilters">
+              <button type="button" class="chip active" data-signal-filter="all" aria-pressed="true">Todas</button>
+              <button type="button" class="chip" data-signal-filter="unread" aria-pressed="false">Sin leer</button>
+              <button type="button" class="chip" data-signal-filter="conflicts" aria-pressed="false">Choques</button>
+              <button type="button" class="chip" data-signal-filter="free_gap" aria-pressed="false">Huecos</button>
+            </div>
+            <div class="chips" style="margin-bottom:8px">
+              <button type="button" class="secondary small" id="signalEvaluate">Evaluar reglas (simulación)</button>
+              <button type="button" class="secondary small" id="signalTest">Generar señal de prueba</button>
+            </div>
+            <div id="signalsList" class="system-list"></div>
+          </article>
+          <article class="card glass">
+            <div class="card-head"><h3>Reglas de señales: umbrales y ventanas</h3><span class="muted small" id="rulesMeta"></span></div>
+            <div id="signalRules" class="system-list"></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== Puesta en marcha ===================== -->
+    <section id="view-setup" class="view" aria-labelledby="setupTitle">
+      <div class="section-title">
+        <div><h2 id="setupTitle">Puesta en marcha</h2><p>Camila y su equipo conectan tus servicios contigo. Tú pones usuario y contraseña; la configuración técnica ya viene resuelta.</p></div>
+        <div class="head-actions">
+          <button type="button" class="ghost small" id="setupRefresh">Actualizar estado</button>
+          <button type="button" class="ghost small" id="setupOpenIntegrations" data-nav="integrations">Ajustes avanzados</button>
+        </div>
+      </div>
+      <div class="card glass setup-hero">
+        <div class="setup-score">
+          <div class="setup-ring" id="setupRing" role="img" aria-label="Progreso de conexiones"><strong id="setupScore">0%</strong><small>conectado</small></div>
+          <div class="setup-hero-copy">
+            <span class="setup-eyebrow">Oficina en marcha</span>
+            <h3 id="setupHeadline">Cargando tus conexiones…</h3>
+            <p id="setupSub">Revisando qué está listo y qué necesita tu usuario y contraseña.</p>
+            <div id="setupTeam" class="setup-team" aria-label="Equipo de la oficina"></div>
+          </div>
+        </div>
+        <div class="setup-meter" aria-hidden="true"><i id="setupMeterBar"></i></div>
+        <div class="setup-hero-foot"><span id="setupCount">—</span><span id="setupNext">—</span></div>
+      </div>
+      <div class="setup-layout">
+        <div id="setupSteps" class="setup-steps" aria-live="polite"></div>
+        <aside class="card glass setup-assistant" aria-labelledby="setupAssistantTitle">
+          <div class="setup-assistant-head">
+            <div class="setup-avatar" aria-hidden="true">CA</div>
+            <div><h3 id="setupAssistantTitle">Camila</h3><span>Jefa de gabinete · te acompaña</span></div>
+            <span class="setup-live">● en línea</span>
+          </div>
+          <div class="setup-chat" id="setupChat" role="log" aria-live="polite">
+            <div class="setup-msg bot"><b>Camila</b><p>Estoy revisando tu oficina. En cuanto cargue el estado te digo exactamente qué falta y qué poner.</p></div>
+          </div>
+          <div class="setup-chips" id="setupChips">
+            <button type="button" class="chip" data-setup-ask="¿Qué falta?">¿Qué falta?</button>
+            <button type="button" class="chip" data-setup-ask="Ayúdame con el correo">Correo</button>
+            <button type="button" class="chip" data-setup-ask="Explícame Google">Google</button>
+            <button type="button" class="chip" data-setup-ask="Quiero conectar Telegram">Telegram</button>
+          </div>
+          <form id="setupChatForm" class="setup-chat-form">
+            <label class="sr-only" for="setupChatInput">Pregúntale a Camila</label>
+            <input id="setupChatInput" autocomplete="off" maxlength="1200" placeholder="Dime qué servicio quieres conectar…" />
+            <button type="submit" class="primary" title="Enviar">↑</button>
+            <button type="button" class="ghost setup-mic" id="setupMic" title="Dictar" aria-label="Dictar mensaje">🎙</button>
+          </form>
+          <p class="hint setup-privacy">Los secretos se guardan cifrados y nunca se muestran aquí. Camila no te pedirá contraseñas por el chat.</p>
+        </aside>
+      </div>
+      <div id="setupFeedback" class="setup-feedback" role="status" aria-live="polite"></div>
+    </section>
+
+    <!-- ===================== Integraciones ===================== -->
+    <section id="view-integrations" class="view" aria-labelledby="integrTitle">
+      <div class="section-title">
+        <div><h2 id="integrTitle">Integraciones y ajustes</h2><p>Conecta el modelo de lenguaje, los canales y Google. Los secretos se guardan cifrados y nunca vuelven al navegador.</p></div>
+        <div class="head-actions"><button type="button" class="primary small" data-nav="setup">⚡ Puesta en marcha</button><button type="button" class="ghost small" id="integrRefresh">Actualizar estado</button></div>
+      </div>
+      <div id="integrationBanners"></div>
+      <article class="card glass" id="modulesCard">
+        <div class="card-head"><h2>Módulos de oficina</h2><span class="muted small">Opcionales con estado real</span></div>
+        <p class="hint">Cada módulo tiene su espacio y sus propios datos. Abre el que necesites desde aquí, sin buscarlo en el menú.</p>
+        <div id="modulesGrid" class="modules-grid"></div>
+      </article>
+      <article class="card glass" id="backupCard">
+        <div class="card-head"><h2>Copia de seguridad</h2><span class="muted small">JSON sin secretos</span></div>
+        <p class="hint">Descarga agenda, tareas, documentos (metadatos), aprobaciones, salas, jornada, base y wiki. No incluye contraseñas, tokens, vault ni archivos binarios.</p>
+        <div class="row-actions">
+          <button type="button" class="secondary" id="backupDownload">Descargar copia de trabajo</button>
+          <button type="button" class="secondary" id="backupFullDownload" title="Copia completa para restaurar: incluye ajustes y autenticación local, sin secretos ni tokens">Copia completa</button>
+          <button type="button" class="secondary" id="backupRestore">Restaurar copia…</button>
+          <input type="file" id="backupFile" accept=".json,application/json" hidden />
+        </div>
+        <p class="hint" id="backupStatus"></p>
+        <p class="hint" id="backupRestoreStatus"></p>
+      </article>
+      <div class="grid two-col">
+        <article class="card glass" id="llmCard" aria-labelledby="llmTitle">
+          <div class="card-head"><h2 id="llmTitle">Modelo de lenguaje (LLM)</h2><span id="llmState" class="tag">—</span></div>
+          <div id="llmBody" class="card-body"></div>
+        </article>
+        <article class="card glass" id="channelsCard" aria-labelledby="channelsTitle">
+          <div class="card-head"><h2 id="channelsTitle">Canales</h2><span id="channelsState" class="tag">—</span></div>
+          <div id="channelsBody" class="card-body"></div>
+        </article>
+      </div>
+      <article class="card glass" id="emailAccountsCard" aria-labelledby="emailAccountsTitle">
+        <div class="card-head"><h2 id="emailAccountsTitle">Cuentas de correo (SMTP)</h2><span id="emailAccountsState" class="tag">—</span></div>
+        <div class="card-body">
+          <p class="hint">Envía correo real desde cualquier cuenta —Gmail con clave de aplicación, Outlook, Zoho, tu dominio— sin pasar por Google. La contraseña se cifra y nunca vuelve al navegador. Con una cuenta activa, los envíos aprobados salen por aquí.</p>
+          <form id="emailAccountForm" class="form-grid">
+            <div class="two">
+              <label class="field"><span>Nombre visible</span><input name="label" maxlength="80" placeholder="Héctor Fabio Riascos C." /></label>
+              <label class="field"><span>Correo remitente *</span><input name="fromEmail" type="email" required maxlength="254" placeholder="hector@dominio.com" autocomplete="email" /></label>
+            </div>
+            <div class="two">
+              <label class="field"><span>Nombre en el «De»</span><input name="fromName" maxlength="120" placeholder="Héctor Fabio Riascos C." /></label>
+              <label class="field"><span>Servidor SMTP *</span><input name="host" required maxlength="253" placeholder="smtp.gmail.com" /></label>
+            </div>
+            <div class="three">
+              <label class="field"><span>Puerto *</span><input name="port" type="number" min="1" max="65535" value="465" required /></label>
+              <label class="field"><span>Seguridad</span><select name="secure"><option value="true">TLS directo (465)</option><option value="false">STARTTLS (587)</option></select></label>
+              <label class="field"><span>Usuario SMTP *</span><input name="user" required maxlength="254" placeholder="hector@dominio.com" autocomplete="username" /></label>
+            </div>
+            <label class="field"><span>Contraseña o clave de aplicación *</span><input name="password" type="password" required maxlength="400" autocomplete="new-password" /></label>
+            <label class="field check"><input type="checkbox" name="allowInsecure" /><span>Permitir sin cifrar (solo servidor local de prueba)</span></label>
+            <div class="row-actions">
+              <button type="submit" class="primary">Guardar cuenta</button>
+              <button type="button" class="ghost small" id="emailAccountsRefresh">Actualizar</button>
+            </div>
+          </form>
+          <div id="emailAccountsList" class="integration-list"></div>
+        </div>
+      </article>
+      <article class="card glass" id="imapAccountsCard" aria-labelledby="imapAccountsTitle">
+        <div class="card-head"><h2 id="imapAccountsTitle">Bandejas IMAP (entrada)</h2><span id="imapAccountsState" class="tag">—</span></div>
+        <div class="card-body">
+          <p class="hint">Lee el correo que llega a cualquier cuenta —Gmail con clave de aplicación, Outlook, Zoho, tu dominio— sin Google y <b>sin marcarlo como leído</b> (BODY.PEEK). TLS obligatorio en el puerto 993. La contraseña se cifra y nunca vuelve al navegador.</p>
+          <form id="imapAccountForm" class="form-grid">
+            <div class="two">
+              <label class="field"><span>Nombre visible</span><input name="label" maxlength="80" placeholder="Bandeja de Héctor" /></label>
+              <label class="field"><span>Correo de la bandeja *</span><input name="email" type="email" required maxlength="254" placeholder="hector@dominio.com" autocomplete="email" /></label>
+            </div>
+            <div class="three">
+              <label class="field"><span>Servidor IMAP *</span><input name="host" required maxlength="253" placeholder="imap.gmail.com" /></label>
+              <label class="field"><span>Puerto *</span><input name="port" type="number" min="1" max="65535" value="993" required /></label>
+              <label class="field"><span>Usuario IMAP *</span><input name="user" required maxlength="254" placeholder="hector@dominio.com" autocomplete="username" /></label>
+            </div>
+            <label class="field"><span>Contraseña o clave de aplicación *</span><input name="password" type="password" required maxlength="400" autocomplete="new-password" /></label>
+            <div class="row-actions">
+              <button type="submit" class="primary">Guardar bandeja</button>
+              <button type="button" class="ghost small" id="imapAccountsRefresh">Actualizar</button>
+            </div>
+          </form>
+          <div id="imapAccountsList" class="integration-list"></div>
+          <div id="imapMessages"></div>
+        </div>
+      </article>
+      <article class="card glass" id="mailGuardCard" aria-labelledby="mailGuardTitle">
+        <div class="card-head"><h2 id="mailGuardTitle">Reglas de correo y cuarentena</h2><span id="mailGuardState" class="tag">—</span></div>
+        <div class="card-body">
+          <p class="hint">Antes de que el auto-borrador redacte una respuesta, estas reglas apartan remitentes o asuntos. Lo retenido <b>no se responde ni se envía</b>: lo revisas aquí y decides si redactar o descartar.</p>
+          <form id="mailRuleForm" class="form-grid">
+            <div class="two">
+              <label class="field"><span>Campo</span><select name="field"><option value="from">Remitente</option><option value="subject">Asunto</option></select></label>
+              <label class="field"><span>Condición</span><select name="match"><option value="contains">Contiene</option><option value="equals">Igual a</option><option value="domain">Dominio</option></select></label>
+            </div>
+            <label class="field"><span>Texto *</span><input name="value" required maxlength="120" placeholder="spam.test · no-reply@… · factura" /></label>
+            <label class="field"><span>Acción</span><select name="action"><option value="quarantine">Retener en cuarentena</option><option value="skip">Omitir sin redactar</option></select></label>
+            <button type="submit" class="primary" id="mailRuleAdd">Añadir regla</button>
+          </form>
+          <div id="mailRulesList" class="integration-list"></div>
+          <div class="card-head" style="margin-top:14px"><h3>En cuarentena</h3><span class="muted small">Solo revisión: nada sale de aquí</span></div>
+          <div id="mailQuarantineList" class="integration-list"></div>
+        </div>
+      </article>      <article class="card glass" id="featuresCard" aria-labelledby="featuresTitle">
+        <div class="card-head"><h2 id="featuresTitle">Laboratorio de funciones</h2><span id="featuresState" class="tag">—</span></div>
+        <div class="card-body">
+          <p class="hint">Cada función nueva entra <b>apagada</b>. En <b>sombra</b> se ejecuta y compara sin efectos; en <b>activa</b> queda disponible. El kill switch la pausa sin desinstalarla y cada cambio queda en el ledger.</p>
+          <div id="featuresBody" class="card-body"></div>
+          <div class="row-actions">
+            <button type="button" class="ghost small" id="featuresRefresh">Actualizar</button>
+            <button type="button" class="ghost small" id="featuresPauseAll">Pausar todas</button>
+            <button type="button" class="ghost small" id="featuresResumeAll">Reanudar todas</button>
+          </div>
+        </div>
+      </article>
+      <article class="card glass" id="mcpCard" aria-labelledby="mcpTitle">
+        <div class="card-head"><h2 id="mcpTitle">Conectores MCP</h2><span id="mcpState" class="tag">—</span></div>
+        <div class="card-body">
+          <p class="hint">Conecta cualquier microservicio o aplicación que hable MCP (HTTP, SSE o stdio). Los headers y variables se cifran en el servidor; las herramientas con efectos externos pasan por tu aprobación.</p>
+          <div id="mcpBody" class="card-body"></div>
+          <form id="mcpForm" class="form-grid" hidden>
+            <label class="field"><span>Nombre *</span><input name="name" required maxlength="80" placeholder="Mi microservicio" /></label>
+            <label class="field"><span>Transporte</span><select name="transport"><option>http</option><option>sse</option><option>stdio</option></select></label>
+            <label class="field" data-field="url"><span>URL MCP *</span><input name="url" maxlength="1000" placeholder="http://127.0.0.1:3001/mcp" /></label>
+            <label class="field" data-field="command" hidden><span>Comando</span><input name="command" maxlength="300" placeholder="node" /></label>
+            <label class="field" data-field="args" hidden><span>Argumentos</span><input name="args" maxlength="500" placeholder="server.mjs --flag" /></label>
+            <label class="field"><span>Timeout (ms)</span><input name="timeoutMs" type="number" min="1000" max="60000" value="10000" /></label>
+            <label class="field wide" data-field="headers"><span>Headers (una por línea, Clave: valor)</span><textarea name="headers" rows="2" maxlength="2000" placeholder="Authorization: Bearer …"></textarea></label>
+            <div class="row-actions"><button type="submit" class="primary small">Añadir conector</button><button type="button" class="ghost small" id="mcpCancel">Cancelar</button></div>
+          </form>
+          <div class="row-actions"><button type="button" class="secondary small" id="mcpNewBtn">＋ Añadir conector</button><button type="button" class="ghost small" id="mcpRefresh">Actualizar</button></div>
+        </div>
+      </article>
+      <article class="card glass" id="approvalsCard" aria-labelledby="approvalsTitle">
+        <div class="card-head"><h2 id="approvalsTitle">Aprobaciones y autonomía</h2><span id="approvalsState" class="tag">—</span></div>
+        <div class="card-body">
+          <p class="hint">Los envíos a terceros se preparan como propuesta y solo salen al aprobarlos y ejecutarlos en la Oficina. La autonomía es opcional: solo actúa en modo total o autónomo, con riesgo ≤2, contacto conocido y nunca en N3; cada envío queda registrado en el ledger.</p>
+          <div class="switch-row">
+            <div>
+              <b>Permitir autonomía de salida</b>
+              <small>Si la activas, algunos envíos de bajo riesgo pueden salir sin aprobación. Por defecto está apagada y puedes desactivarla cuando quieras.</small>
+            </div>
+            <label class="switch" title="Permitir autonomía de salida">
+              <input type="checkbox" id="allowAutonomousOutbound" aria-label="Permitir autonomía de salida" />
+              <span></span>
+            </label>
+          </div>
+          <p id="approvalsHint" class="hint" role="status">Comprobando estado…</p>
+        </div>
+      </article>
+      <div class="grid two-col">
+        <article class="card glass" aria-labelledby="googleTitle">
+          <div class="card-head"><h2 id="googleTitle">Google Calendar y Gmail</h2><span id="googleState" class="tag">—</span></div>
+          <div id="googleBody" class="card-body"></div>
+        </article>
+        <article class="card glass" aria-labelledby="prefsTitle">
+          <div class="card-head"><h2 id="prefsTitle">Zona horaria y jornada</h2></div>
+          <form id="prefsForm" class="card-body form-grid"></form>
+        </article>
+      </div>
+      <div class="grid two-col">
+        <article class="card glass" aria-labelledby="dataTitle">
+          <div class="card-head"><h2 id="dataTitle">Datos y respaldo</h2><span id="dataState" class="tag">—</span></div>
+          <div id="dataBody" class="card-body"></div>
+        </article>
+        <article class="card glass" aria-labelledby="securityTitle">
+          <div class="card-head"><h2 id="securityTitle">Seguridad</h2><span id="securityState" class="tag">—</span></div>
+          <div id="securityBody" class="card-body"></div>
+        </article>
+      </div>
+      <article class="card glass" aria-labelledby="simTitle">
+        <div class="card-head"><h2 id="simTitle">Simulador de canales</h2><span class="muted small">Prueba el flujo sin enviar mensajes reales</span></div>
+        <div id="simulatorBody" class="card-body"></div>
+      </article>
+    </section>
+
+    <!-- ===================== Sistema P95 ===================== -->
+    <section id="view-system" class="view" aria-labelledby="sysTitle">
+      <div class="section-title">
+        <div><h2 id="sysTitle">Sistema P95</h2><p>Índice de 7 componentes, métricas diarias, reportes, inbox y OKR del modelo Excel.</p></div>
+        <div class="head-actions"><button type="button" class="ghost small" id="systemRefresh">Actualizar</button></div>
+      </div>
+      <div class="grid two-col">
+        <article class="card glass">
+          <div class="card-head"><h3>Índice P95 · 7 componentes</h3><span class="muted small" id="p95SumLabel"></span></div>
+          <div id="p95Table"></div>
+        </article>
+        <article class="card glass">
+          <div class="card-head"><h3>Pesos, metas y ajustes del motor</h3></div>
+          <form id="p95Form" class="form-grid"></form>
+        </article>
+      </div>
+      <div class="grid two-col">
+        <article class="card glass">
+          <div class="card-head"><h3>Métricas diarias</h3><span class="muted small">14 campos del modelo</span></div>
+          <form id="metricsForm" class="form-grid metrics-form"></form>
+          <div id="metricsTable"></div>
+        </article>
+        <article class="card glass">
+          <div class="card-head"><h3>Reportes</h3><div class="head-actions"><button type="button" class="ghost small" data-report="weekly">Semanal</button><button type="button" class="ghost small" data-report="monthly">Mensual</button></div></div>
+          <pre id="reportsBox" class="report-box">Pulsa «Semanal» o «Mensual» para generar el balance.</pre>
+        </article>
+      </div>
+      <div class="grid two-col">
+        <article class="card glass">
+          <div class="card-head"><h3>Inbox universal</h3><span id="inboxCount" class="muted small"></span></div>
+          <div id="inboxList" class="system-list"></div>
+        </article>
+        <article class="card glass">
+          <div class="card-head"><h3>Objetivos / OKR</h3><span class="muted small">Progreso por resultado</span></div>
+          <div id="okrGrid" class="okr-grid"></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===================== Navegación inferior ===================== -->
+
+    <!-- ===================== Salas ===================== -->
+    <section id="view-rooms" class="view" aria-labelledby="roomsTitle">
+      <div class="section-title">
+        <div><h2 id="roomsTitle">Salas</h2><p>Salas físicas y reservas por día: evita cruces y sabe qué está libre antes de agendar.</p></div>
+        <div class="head-actions">
+          <label class="field inline"><span>Día</span><input type="date" id="roomsDate" /></label>
+          <button type="button" class="ghost small" id="roomsRefresh">Actualizar</button>
+        </div>
+      </div>
+      <div class="card glass">
+        <div class="card-head"><h3>Disponibilidad</h3><span class="muted small" id="roomsStats"></span></div>
+        <p class="muted small" id="roomsSummary">Cargando…</p>
+      </div>
+      <div class="grid two-col">
+        <article class="card glass">
+          <div class="card-head"><h3>Nueva sala</h3><span class="muted small">Nombre y ubicación</span></div>
+          <form id="roomForm" class="form-grid">
+            <label class="field"><span>Sala *</span><input name="name" required maxlength="80" autocomplete="off" placeholder="Sala 2 · Junta" /></label>
+            <label class="field"><span>Ubicación</span><input name="location" maxlength="120" autocomplete="off" placeholder="Sede norte, piso 3" /></label>
+            <label class="field"><span>Capacidad</span><input name="capacity" type="number" min="0" max="10000" step="1" value="0" /></label>
+            <label class="field"><span>Notas</span><input name="notes" maxlength="240" autocomplete="off" placeholder="Proyector, aire, etc." /></label>
+            <button type="submit" class="primary" id="roomCreate">Crear sala</button>
+            <button type="button" class="ghost small" id="roomCancelEdit" hidden>Cancelar edición</button>
+          </form>
+        </article>
+        <article class="card glass">
+          <div class="card-head"><h3>Reservar</h3><span class="muted small">Sin cruces de horario</span></div>
+          <form id="reservationForm" class="form-grid">
+            <label class="field"><span>Sala</span><select name="room" id="roomsSelect"><option value="">—</option></select></label>
+            <label class="field"><span>Motivo *</span><input name="title" required maxlength="120" autocomplete="off" placeholder="Reunión con Andrés" /></label>
+            <label class="field"><span>Fecha</span><input name="date" type="date" required /></label>
+            <label class="field"><span>Inicio</span><input name="start" type="time" required value="09:00" /></label>
+            <label class="field"><span>Fin</span><input name="end" type="time" required value="10:00" /></label>
+            <button type="submit" class="secondary" id="reservationCreate">Reservar</button>
+            <button type="button" class="ghost small" id="reservationCancelEdit" hidden>Cancelar edición</button>
+          </form>
+        </article>
+      </div>
+      <div id="roomsList" class="rooms-list"></div>
+    </section>
+    <!-- ===================== Jornada ===================== -->
+    <section id="view-attendance" class="view" aria-labelledby="attendanceTitle">
+      <div class="section-title">
+        <div><h2 id="attendanceTitle">Jornada</h2><p>Entrada, salida y pausas reales: cuánto trabajaste y cuánto queda abierto.</p></div>
+        <div class="head-actions">
+          <label class="field inline"><span>Desde</span><input type="date" id="attendanceFrom" /></label>
+          <label class="field inline"><span>Hasta</span><input type="date" id="attendanceTo" /></label>
+          <button type="button" class="ghost small" id="attendancePrintBtn" title="Imprimir o guardar la jornada como PDF">Imprimir / PDF</button>
+          <button type="button" class="ghost small" id="attendanceExportCsv" title="Descargar los turnos del rango en CSV">Exportar CSV</button>
+          <button type="button" class="ghost small" id="attendanceRefresh">Actualizar</button>
+        </div>
+      </div>
+      <div class="print-only" id="attendancePrintHead"><h1>Jornada</h1><p id="attendancePrintStamp"></p></div>
+      <div class="card glass" id="attendanceNowCard">
+        <div class="card-head"><h3>Ahora</h3><span class="muted small" id="attendanceStatus"></span></div>
+        <div class="row-actions">
+          <button type="button" class="primary" id="attendanceIn">Entrada</button>
+          <button type="button" class="secondary" id="attendanceOut">Salida</button>
+          <button type="button" class="ghost" id="attendanceBreak">Pausa</button>
+        </div>
+        <div id="attendanceCounts" class="approval-metrics" style="margin-top:10px"></div>
+        <p class="muted small" id="attendanceHint"></p>
+      </div>
+      <article class="card glass">
+        <div class="card-head"><h3>Turnos</h3><span class="muted small" id="attendanceRange"></span></div>
+        <div id="attendanceList" class="integration-list"></div>
+      </article>
+    </section>
+    <!-- ===================== Objetivos (OKR) ===================== -->
+    <section id="view-okr" class="view" aria-labelledby="okrTitle">
+      <div class="section-title">
+        <div><h2 id="okrTitle">Objetivos</h2><p>Metas con resultados medibles: qué quieres lograr, cómo se mide y cuánto falta.</p></div>
+        <div class="head-actions"><button type="button" class="ghost small" id="okrPrintBtn" title="Imprimir o guardar los objetivos como PDF">Imprimir / PDF</button><button type="button" class="ghost small" id="okrExportCsv" title="Descargar objetivos y resultados en CSV">Exportar CSV</button><button type="button" class="ghost small" id="okrRefresh">Actualizar</button></div>
+      </div>
+      <div class="print-only" id="okrPrintHead"><h1>Objetivos y resultados clave</h1><p id="okrPrintStamp"></p></div>
+      <div class="card glass">
+        <div class="card-head"><h3>Resumen</h3><span class="muted small" id="okrStats"></span></div>
+        <p class="muted small" id="okrSummary">Cargando…</p>
+      </div>
+      <div class="grid two-col">
+        <article class="card glass">
+          <div class="card-head"><h3>Nuevo objetivo</h3><span class="muted small">Trimestre opcional</span></div>
+          <form id="okrForm" class="form-grid">
+            <label class="field"><span>Objetivo *</span><input name="title" required maxlength="160" autocomplete="off" placeholder="Cerrar 3 actas de liberación…" /></label>
+            <label class="field"><span>Responsable</span><input name="owner" maxlength="80" autocomplete="off" placeholder="Héctor / equipo" /></label>
+            <label class="field"><span>Trimestre</span><input name="quarter" maxlength="7" autocomplete="off" placeholder="2026-Q4" /><small class="hint">Formato AAAA-Q1..Q4.</small></label>
+            <button type="submit" class="primary" id="okrCreate">Crear objetivo</button>
+          </form>
+        </article>
+        <article class="card glass">
+          <div class="card-head"><h3>Nuevo resultado clave</h3><span class="muted small">Mide un objetivo</span></div>
+          <form id="okrKrForm" class="form-grid">
+            <label class="field"><span>Objetivo</span><select name="objective" id="okrObjectiveSelect"><option value="">—</option></select></label>
+            <label class="field"><span>Resultado *</span><input name="title" required maxlength="160" autocomplete="off" placeholder="Publicar 3 actas firmadas" /></label>
+            <label class="field"><span>Meta</span><input name="target" type="number" min="0.01" step="any" value="3" /></label>
+            <label class="field"><span>Avance</span><input name="current" type="number" min="0" step="any" value="0" /></label>
+            <label class="field"><span>Unidad</span><input name="unit" maxlength="20" value="%" /></label>
+            <button type="submit" class="secondary" id="okrKrCreate">Añadir resultado</button>
+          </form>
+        </article>
+      </div>
+      <div id="okrList" class="okr-list"></div>
+    </section>
+    <!-- ===================== Oficina ===================== -->
+    <section id="view-office" class="view" aria-labelledby="officeTitle">
+      <div class="section-title">
+        <div><h2 id="officeTitle">Oficina</h2><p>Tu equipo de agentes propone y opina; tú apruebas. Aprobar mueve el gate; ejecutar es el paso final.</p></div>
+        <div class="head-actions">
+          <label class="inline-field" for="officeMode">Modo</label>
+          <select id="officeMode" aria-label="Modo de la oficina"></select>
+        </div>
+      </div>
+      <div id="officeStatusBar" class="status-bar" aria-live="polite"></div>
+      <div id="officeOutboundNotice" class="banner" role="status" hidden></div>
+      <div class="grid two-col">
+        <article class="card glass">
+          <div class="card-head"><h3>Organigrama</h3><span class="muted small" id="officeRosterMeta">7 roles</span></div>
+          <div id="officeRoster" class="roster-grid"></div>
+        </article>
+        <article class="card glass">
+          <div class="card-head"><h3>Bandeja de propuestas</h3><span class="muted small" id="officeCounts"></span></div>
+          <div class="filters" role="group" aria-label="Filtro de propuestas" id="officeFilters">
+            <button type="button" class="chip active" data-office-status="pending" aria-pressed="true">Pendientes</button>
+            <button type="button" class="chip" data-office-status="approved" aria-pressed="false">Aprobadas</button>
+            <button type="button" class="chip" data-office-status="all" aria-pressed="false">Todas</button>
+          </div>
+          <div id="officeProposals" class="proposal-list"></div>
+        </article>
+      </div>
+      <article class="card glass">
+        <div class="card-head"><h3>Ledger auditable</h3><div class="head-actions"><button type="button" class="ghost small" id="officeVerify">Verificar cadena</button><button type="button" class="ghost small" id="officeExportLedger">Exportar JSON</button></div></div>
+        <p id="officeLedgerStatus" class="hint" role="status">Cadena SHA-256 con génesis y encadenamiento por entrada.</p>
+        <div id="officeLedger" class="ledger-list"></div>
+      </article>
+    </section>
+
+    <!-- ===================== Aprobaciones ===================== -->
+    <section id="view-approvals" class="view" aria-labelledby="approvalsTitle">
+      <div class="section-title">
+        <div><h2 id="approvalsTitle">Aprobaciones</h2><p>Todo lo que espera tu visto bueno en un solo lugar: propuestas, ejecuciones y correo retenido.</p></div>
+        <div class="head-actions"><button type="button" class="ghost small" id="approvalsRefresh">Actualizar</button></div>
+      </div>
+      <div class="card glass">
+        <div class="card-head"><h3>Resumen</h3><span class="muted small" id="approvalsStats"></span></div>
+        <p class="muted small" id="approvalsSummary">Cargando…</p>
+        <div id="approvalMetrics" class="approval-metrics"></div>
+      </div>
+      <div class="grid two-col">
+        <article class="card glass">
+          <div class="card-head"><h3>Pendientes</h3><span class="muted small" id="approvalsPendingCount"></span></div>
+          <div id="approvalPending" class="integration-list"></div>
+        </article>
+        <article class="card glass">
+          <div class="card-head"><h3>Aprobadas por ejecutar</h3><span class="muted small" id="approvalsApprovedCount"></span></div>
+          <div id="approvalApproved" class="integration-list"></div>
+        </article>
+      </div>
+      <article class="card glass">
+        <div class="card-head"><h3>Correo en cuarentena</h3><span class="muted small" id="approvalsQuarantineCount"></span></div>
+        <div id="approvalQuarantine" class="integration-list"></div>
+      </article>
+      <div class="grid two-col">
+        <article class="card glass">
+          <div class="card-head"><h3>Tipos de solicitud</h3><span class="muted small">Sin código</span></div>
+          <form id="approvalTypeForm" class="form-grid">
+            <label class="field"><span>Nombre *</span><input name="name" required maxlength="80" autocomplete="off" placeholder="Permiso de salida, compra menor…" /></label>
+            <label class="field"><span>Nivel</span><select name="level"><option value="N1">N1 · informativo</option><option value="N2" selected>N2 · visto bueno</option></select></label>
+            <label class="field"><span>SLA (horas)</span><input name="slaHours" type="number" min="1" max="720" value="48" required /><small class="hint">Plazo para decidir; se marca vencida.</small></label>
+            <label class="field"><span>Campos</span><input name="fields" maxlength="300" value="Motivo:texto, Fecha:fecha" autocomplete="off" /><small class="hint">Etiqueta:tipo · texto, número, fecha, casilla</small></label>
+            <label class="field"><span>Descripción</span><input name="description" maxlength="240" autocomplete="off" placeholder="Para qué sirve este tipo" /></label>
+            <button type="submit" class="secondary" id="approvalTypeCreate">Crear tipo</button>
+            <button type="button" class="ghost small" id="approvalTypeCancelEdit" hidden>Cancelar edición</button>
+          </form>
+          <div id="approvalTypesList" class="integration-list"></div>
+        </article>
+        <article class="card glass">
+          <div class="card-head"><h3>Solicitudes</h3><span class="muted small" id="approvalRequestsCount"></span></div>
+          <form id="approvalRequestForm" class="form-grid">
+            <label class="field"><span>Tipo</span><select name="type" id="approvalTypeSelect"><option value="">—</option></select></label>
+            <label class="field"><span>Título *</span><input name="title" required maxlength="160" autocomplete="off" placeholder="Permiso para salir el viernes" /></label>
+            <div id="approvalRequestFields" class="form-grid"></div>
+            <button type="submit" class="primary" id="approvalRequestCreate">Crear solicitud</button>
+          </form>
+          <div id="approvalRequestsList" class="integration-list"></div>
+        </article>
+      </div>
+
+    </section>
+    <!-- ===================== Momentos ===================== -->
+    <section id="view-moments" class="view" aria-labelledby="momentsTitle">
+      <div class="section-title">
+        <div><h2 id="momentsTitle">Momentos</h2><p>Tu semana en la oficina: lo que pasó, lo que avanzó y lo que te espera.</p></div>
+        <div class="head-actions">
+          <button type="button" class="ghost small" id="momentsCopy">Copiar resumen</button>
+          <button type="button" class="ghost small" id="momentsRefresh">Actualizar</button>
+        </div>
+      </div>
+      <div class="card glass">
+        <div class="card-head"><h3>Resumen</h3><span class="muted small" id="momentsRange"></span></div>
+        <div id="momentsCounts" class="approval-metrics"></div>
+        <p class="muted small" id="momentsSummary">Cargando…</p>
+      </div>
+      <div class="grid two-col">
+        <article class="card glass">
+          <div class="card-head"><h3>Te espera</h3><span class="muted small">Prioridad</span></div>
+          <div id="momentsNeeds"></div>
+        </article>
+        <article class="card glass">
+          <div class="card-head"><h3>Lo que avanzó</h3><span class="muted small">Esta semana</span></div>
+          <div id="momentsWins"></div>
+        </article>
+      </div>
+      <div class="grid two-col">
+        <article class="card glass">
+          <div class="card-head"><h3>Próximos eventos</h3><span class="muted small">7 días</span></div>
+          <div id="momentsNext"></div>
+        </article>
+        <article class="card glass">
+          <div class="card-head"><h3>Salas reservadas</h3><span class="muted small">Próximos 7 días</span></div>
+          <div id="momentsRooms"></div>
+        </article>
+      </div>
+    </section>
+    <!-- ===================== Documentos ===================== -->
+    <section id="view-docs" class="view" aria-labelledby="docsTitle">
+      <div class="section-title">
+        <div><h2 id="docsTitle">Documentos</h2><p>Word, Excel y PowerPoint reales, generados aquí y listos para descargar o enviar.</p></div>
+        <div class="head-actions"><button type="button" class="ghost small" id="docsExportZip" title="Descargar todos los documentos en un ZIP">Descargar todo (.zip)</button><button type="button" class="ghost small" id="docsRefresh">Actualizar</button></div>
+      </div>
+      <div class="grid two-col">
+        <article class="card glass">
+          <div class="card-head"><h3>Nuevo documento</h3><span class="muted small" id="docsFormHint">Se guarda en el servidor</span></div>
+          <form id="docForm" class="form-grid">
+            <div class="chips-field"><span class="chips-label">Tipo</span>
+              <div class="chips" role="group" aria-label="Tipo de documento" id="docTypeChips">
+                <button type="button" class="chip active" data-doc-type="docx" aria-pressed="true">Word</button>
+                <button type="button" class="chip" data-doc-type="xlsx" aria-pressed="false">Excel</button>
+                <button type="button" class="chip" data-doc-type="pptx" aria-pressed="false">PowerPoint</button>
+              </div>
+            </div>
+            <label class="field"><span>Título *</span><input name="title" required maxlength="200" placeholder="Acta de reunión, propuesta comercial…" /></label>
+            <label class="field" id="docTemplateField"><span>Plantilla</span><select name="template"><option value="">Sin plantilla</option></select><small class="hint">Las plantillas de marca aplican colores, logo y pie.</small></label>
+            <label class="field" id="docWatermarkField"><span>Marca de agua</span><input name="watermark" maxlength="40" placeholder="RESERVADO, COPIA CONTROLADA…" /><small class="hint">Word, Excel y PowerPoint: se imprime en el encabezado/pie o en cada diapositiva.</small></label>
+            <label class="field"><span id="docContentLabel">Contenido</span><textarea name="content" rows="10" maxlength="20000" placeholder="# Título&#10;Texto del párrafo&#10;- viñeta"></textarea><small class="hint" id="docContentHint">Usa «# Título», «## Subtítulo», «- viñeta» y líneas sueltas para párrafos.</small></label>
+            <label class="field" id="docSheetField" hidden><span>Nombre de la hoja</span><input name="sheetName" maxlength="31" value="Hoja1" /></label>
+            <label class="field check"><input type="checkbox" name="openAfter" checked /><span>Abrir la descarga al terminar</span></label>
+            <button type="submit" class="primary" id="docCreateBtn">Generar documento</button>
+          </form>
+          <p id="docFormStatus" class="hint" role="status"></p>
+        </article>
+        <article class="card glass">
+          <div class="card-head"><h3>Guardados</h3><span class="muted small" id="docsStats"></span></div>
+          <label class="search"><span class="sr-only">Buscar documento</span><input id="docsSearch" type="search" placeholder="Buscar por título o archivo…" autocomplete="off" /></label>
+          <div id="docsList" class="docs-list"></div>
+        </article>
+      </div>
+      <article class="card glass" id="meetingCaptureCard">
+        <div class="card-head"><h3>Captura de reunión → acta</h3><span class="muted small">La transcripción no se guarda; solo se envía al modelo para extraer</span></div>
+        <form id="meetingCaptureForm" class="form-grid capture-grid">
+          <label class="field"><span>Título de la reunión *</span><input name="title" required maxlength="200" placeholder="Acta de liberación del predio…" /></label>
+          <label class="field"><span>Fecha</span><input type="date" name="date" /></label>
+          <label class="field"><span>Hora</span><input type="time" name="time" /></label>
+          <label class="field"><span>Lugar</span><input name="location" maxlength="200" placeholder="Cali, sala 2 / Meet" /></label>
+          <label class="field"><span>Transcripción *</span><textarea name="transcript" rows="7" maxlength="20000" required placeholder="Pega aquí la transcripción o las notas de la reunión. Cuanto más completa, mejor salen los acuerdos."></textarea></label>
+          <label class="field"><span>Notas privadas (anexo)</span><textarea name="privateNotes" rows="2" maxlength="3000" placeholder="Acuerdos reservados que NO deben aparecer en el cuerpo del acta."></textarea><small class="hint">Estas notas van al anexo privado del acta; no se envían al modelo.</small></label>
+          <div class="row-actions">
+            <button type="button" class="ghost small" id="captureDictate" title="Dictar la transcripción con el micrófono">🎙 Dictar transcripción</button>
+            <button type="button" class="ghost small" id="captureRecord" title="Grabar el audio de la reunión y descargarlo en este equipo; no se sube al servidor">⏺ Grabar audio</button>
+            <select id="captureLiveLang" aria-label="Idioma de la captura en vivo" title="Idioma de la captura en vivo">
+              <option value="es-CO">Español (CO)</option>
+              <option value="en-US">English (US)</option>
+              <option value="pt-BR">Português (BR)</option>
+              <option value="fr-FR">Français (FR)</option>
+            </select>
+            <button type="button" class="ghost small" id="captureLive" title="Transcribir la reunión en vivo mientras hablan">● Captura en vivo</button>
+            <button type="button" class="ghost small" id="captureSaveTranscript" title="Guardar la transcripción como documento Word">Guardar transcripción</button>
+            <button type="submit" class="secondary" id="captureExtract">Extraer acuerdos</button>
+            <button type="button" class="primary" id="captureCreateActa" hidden>Crear acta y tareas</button>
+          </div>
+          <small class="hint">La captura en vivo usa el micrófono del navegador (Chrome o Edge). No guarda audio; solo escribe la transcripción.</small>
+        </form>
+        <p id="captureStatus" class="hint" role="status"></p>
+        <p id="captureLiveStatus" class="hint" role="status"></p>
+        <p id="captureRecordStatus" class="hint" role="status"></p>
+        <div id="capturePreview" hidden></div>
+      </article>
+      <article class="card glass" id="translateCard">
+        <div class="card-head"><h3>Traducción</h3><span class="muted small">Seis idiomas · usa el modelo configurado</span></div>
+        <form id="translateForm" class="form-grid">
+          <label class="field"><span>Texto (máx. 4.000)</span><textarea id="translateInput" rows="5" maxlength="4000" placeholder="Pega el texto que quieres traducir…"></textarea></label>
+          <label class="field"><span>Idioma destino</span><select id="translateTo"><option value="es">Español</option><option value="en" selected>Inglés</option><option value="pt">Portugués</option><option value="fr">Francés</option><option value="de">Alemán</option><option value="it">Italiano</option></select></label>
+          <div class="row-actions">
+            <button type="submit" class="secondary" id="translateRun">Traducir</button>
+            <button type="button" class="ghost small" id="translateCopy">Copiar resultado</button>
+            <button type="button" class="ghost small" id="translateClear">Limpiar</button>
+          </div>
+        </form>
+        <p id="translateStatus" class="hint" role="status"></p>
+        <label class="field"><span>Resultado</span><textarea id="translateOutput" rows="5" readonly placeholder="La traducción aparecerá aquí…"></textarea></label>
+        <p class="muted small">No se guarda en el servidor. Sin modelo disponible devuelve un error; no inventa la traducción.</p>
+      </article>
+      <article class="card glass">
+        <div class="card-head"><h3>Plantillas de marca</h3><span class="muted small">Colores, logo y pie</span></div>
+        <div id="docsTemplates" class="template-list"></div>
+      </article>
+    </section>
+
+    <!-- ===================== Wiki ===================== -->
+    <section id="view-wiki" class="view" aria-labelledby="wikiTitle">
+      <div class="section-title">
+        <div><h2 id="wikiTitle">Wiki</h2><p>Memoria escrita de la oficina: procedimientos, predios, contactos y decisiones, buscable.</p></div>
+        <div class="head-actions">
+          <button type="button" class="primary small" id="wikiNew">Nueva página</button>
+          <button type="button" class="ghost small" id="wikiRefresh">Actualizar</button>
+        </div>
+      </div>
+      <div class="grid two-col">
+        <article class="card glass">
+          <div class="card-head"><h3>Páginas</h3><span class="muted small" id="wikiStats">0 página(s)</span></div>
+          <label class="search"><span class="sr-only">Buscar en la wiki</span><input id="wikiSearch" type="search" placeholder="Buscar en títulos, contenido y etiquetas…" autocomplete="off" /></label>
+          <div id="wikiList" class="docs-list"></div>
+        </article>
+        <article class="card glass">
+          <div class="card-head"><h3 id="wikiEditorTitle">Nueva página</h3><span class="muted small" id="wikiEditorState">Se guarda en el servidor</span></div>
+          <form id="wikiForm" class="form-grid">
+            <label class="field"><span>Título *</span><input name="title" required maxlength="160" autocomplete="off" placeholder="Procedimiento de acta de liberación…" /></label>
+            <label class="field"><span>Etiquetas (separadas por coma)</span><input name="tags" maxlength="300" autocomplete="off" placeholder="predios, actas, catastro" /></label>
+            <label class="field"><span>Contenido *</span><textarea name="body" rows="14" required maxlength="50000" placeholder="Escribe el procedimiento, los datos del predio, la decisión o el contacto…"></textarea></label>
+            <div class="row-actions">
+              <button type="submit" class="primary" id="wikiSave">Guardar página</button>
+              <button type="button" class="ghost" id="wikiDelete" hidden>Borrar</button>
+              <button type="button" class="secondary" id="wikiCancel" hidden>Cancelar</button>
+            </div>
+          </form>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===================== Identidades ===================== -->
+    <section id="view-identity" class="view" aria-labelledby="identityTitle">
+      <div class="section-title">
+        <div><h2 id="identityTitle">Identidades</h2><p>Una persona puede tener varios correos. Aquí los unes y compruebas a cuántas direcciones se enviaría.</p></div>
+        <div class="head-actions"><button type="button" class="ghost small" id="identityRefresh">Actualizar</button></div>
+      </div>
+      <div class="grid two-col">
+        <article class="card glass">
+          <div class="card-head"><h3>Añadir o fusionar persona</h3><span class="muted small" id="identityStats">0 personas</span></div>
+          <form id="identityForm" class="form-grid">
+            <label class="field"><span>Nombre *</span><input name="name" required maxlength="120" autocomplete="off" placeholder="Andrés M." /></label>
+            <label class="field"><span>Correos *</span><input name="emails" required maxlength="800" autocomplete="off" placeholder="andres@empresa.com, andres@gmail.com" /><small class="hint">Hasta 10 correos separados por coma.</small></label>
+            <label class="field"><span>Alias</span><input name="aliases" maxlength="400" autocomplete="off" placeholder="Andrés, Andresito" /></label>
+            <label class="field"><span>Nota</span><input name="note" maxlength="500" autocomplete="off" placeholder="Solicitante del predio, cliente…" /></label>
+            <button type="submit" class="primary" id="identityCreate">Guardar persona</button>
+          </form>
+          <p class="hint">Si el nombre ya existe, los correos y alias se fusionan; no se duplica.</p>
+        </article>
+        <article class="card glass">
+          <div class="card-head"><h3>Probar destinatarios</h3><span class="muted small">Igual que al redactar</span></div>
+          <form id="identityExpandForm" class="form-grid">
+            <label class="field"><span>Buscar por nombre o correo</span><input name="query" required maxlength="200" autocomplete="off" placeholder="Andrés, andres@empresa.com…" /></label>
+            <button type="submit" class="secondary" id="identityExpandBtn">Expandir</button>
+          </form>
+          <div id="identityExpandResult" class="muted small"></div>
+        </article>
+      </div>
+      <article class="card glass">
+        <div class="card-head"><h3>Personas</h3><span class="muted small" id="identityCount"></span></div>
+        <label class="search"><span class="sr-only">Buscar persona</span><input id="identitySearch" type="search" placeholder="Buscar por nombre, alias o correo…" autocomplete="off" /></label>
+        <div id="identityPeople" class="integration-list"></div>
+      </article>
+    </section>
+    <!-- ===================== Auditoría ===================== -->
+    <section id="view-audit" class="view" aria-labelledby="auditTitle">
+      <div class="section-title">
+        <div><h2 id="auditTitle">Auditoría</h2><p>Consulta el ledger de la oficina: quién hizo qué, cuándo y con qué huella. Solo lectura.</p></div>
+        <div class="head-actions">
+          <button type="button" class="ghost small" id="auditRefresh">Actualizar</button>
+          <button type="button" class="secondary small" id="auditVerify">Verificar cadena</button>
+          <button type="button" class="ghost small" id="auditExportJson">Exportar JSON</button>
+          <button type="button" class="ghost small" id="auditExportCsv">Exportar CSV</button>
+        </div>
+      </div>
+      <div class="card glass">
+        <div class="card-head"><h3>Resumen</h3><span class="muted small" id="auditStats"></span></div>
+        <div id="auditVerifyResult" class="muted small"></div>
+      </div>
+      <div class="card glass">
+        <form id="auditFilters" class="form-grid audit-filters">
+          <label class="field"><span>Actor</span><input name="actor" maxlength="80" autocomplete="off" placeholder="lingo, oficina, agente…" /></label>
+          <label class="field"><span>Acción</span><input name="action" maxlength="120" autocomplete="off" placeholder="propuesta, lingo.change…" /></label>
+          <label class="field"><span>Texto</span><input name="q" maxlength="120" autocomplete="off" placeholder="Nombre o dato del payload…" /></label>
+          <label class="field"><span>Desde</span><input type="date" name="from" /></label>
+          <label class="field"><span>Hasta</span><input type="date" name="to" /></label>
+          <div class="row-actions">
+            <button type="submit" class="primary" id="auditFilterButton">Filtrar</button>
+            <button type="button" class="secondary" id="auditReset">Limpiar</button>
+          </div>
+        </form>
+      </div>
+      <div class="card glass">
+        <div class="card-head"><h3>Eventos</h3><span class="muted small" id="auditCount"></span></div>
+        <div id="auditTable"></div>
+      </div>
+    </section>
+    <!-- ===================== Lingo ===================== -->
+    <section id="view-lingo" class="view" aria-labelledby="lingoTitle">
+      <div class="section-title">
+        <div><h2 id="lingoTitle">Léxico</h2><p>Nombres y entidades canónicas: una sola forma correcta para voz, redacción, correos y documentos.</p></div>
+        <div class="head-actions"><button type="button" class="ghost small" id="lingoRefresh">Actualizar</button></div>
+      </div>
+      <div class="grid two-col">
+        <article class="card glass">
+          <div class="card-head"><h3>Añadir término</h3><span class="muted small" id="lingoStats">0 términos</span></div>
+          <form id="lingoForm" class="form-grid">
+            <label class="field"><span>Forma canónica *</span><input name="term" required maxlength="120" autocomplete="off" placeholder="Héctor Fabio Riascos C." /></label>
+            <label class="field"><span>Variantes</span><input name="variants" maxlength="800" autocomplete="off" placeholder="Hector Fabio, Héctor F. (separadas por coma)" /></label>
+            <label class="field"><span>Contexto</span><input name="context" maxlength="120" autocomplete="off" placeholder="predios, clientes, catastro…" /></label>
+            <button type="submit" class="primary" id="lingoCreate">Guardar en sombra</button>
+            <small class="hint">Todo término nuevo entra en sombra. Apruébalo para que se use al redactar y reconocer nombres.</small>
+          </form>
+          <form id="lingoApplyForm" class="form-grid">
+            <label class="field"><span>Probar canonicalización</span><textarea name="text" rows="3" maxlength="5000" placeholder="Escribe un texto con variantes, p. ej. «Hector Fabio confirmó en Palmitra»."></textarea></label>
+            <button type="submit" class="secondary" id="lingoApplyButton">Aplicar</button>
+          </form>
+          <div id="lingoApplyResult" class="muted small"></div>
+        </article>
+        <article class="card glass">
+          <div class="card-head"><h3>Términos</h3><span class="muted small" id="lingoCount"></span></div>
+          <div class="form-grid">
+            <label class="field"><span>Buscar</span><input id="lingoSearch" maxlength="120" autocomplete="off" placeholder="Nombre o variante…" /></label>
+            <label class="field"><span>Estado</span><select id="lingoStatus"><option value="all">Todos</option><option value="approved">Aprobados</option><option value="shadow">En sombra</option><option value="rejected">Rechazados</option></select></label>
+          </div>
+          <div id="lingoTerms" class="integration-list"></div>
+        </article>
+      </div>
+    </section>
+    <!-- ===================== Base ===================== -->
+    <section id="view-base" class="view" aria-labelledby="baseTitle">
+      <div class="section-title">
+        <div><h2 id="baseTitle">Base</h2><p>Tablas de registros con columnas tipadas: predios, contactos, compromisos y lo que necesites.</p></div>
+        <div class="head-actions"><button type="button" class="ghost small" id="basePrintBtn" title="Imprimir o guardar la tabla como PDF">Imprimir / PDF</button><button type="button" class="ghost small" id="baseRefresh">Actualizar</button></div>
+      </div>
+      <article class="card glass" id="baseAskCard">
+        <div class="card-head"><h3>Preguntar a la base</h3><span class="muted small">Lenguaje natural, sin inventar</span></div>
+        <form id="baseAskForm" class="form-grid">
+          <label class="field"><span>Pregunta</span><input name="question" maxlength="300" autocomplete="off" placeholder="¿Cuántos predios están pagados?" required /></label>
+          <div class="row-actions"><button type="submit" class="primary" id="baseAskBtn">Preguntar</button></div>
+        </form>
+        <p class="hint" id="baseAskAnswer">Ejemplos: «¿cuántos predios hay?», «contactos con ciudad = Cali», «predios donde estado contiene pendiente».</p>
+        <div id="baseAskRows"></div>
+      </article>
+      <div class="grid two-col">
+        <article class="card glass" id="baseTablesCard">
+          <div class="card-head"><h3>Tablas</h3><span class="muted small" id="baseTablesState">0 tablas</span></div>
+          <form id="baseTableForm" class="form-grid">
+            <label class="field"><span>Nombre *</span><input name="name" required maxlength="80" autocomplete="off" placeholder="Predios, Contactos…" /></label>
+            <label class="field"><span>Columnas</span><input name="columns" maxlength="400" value="Nombre:texto, Notas:texto" autocomplete="off" /><small class="hint">Nombre:texto, Fecha:fecha, Valor:número, Pagado:casilla</small></label>
+            <button type="submit" class="primary" id="baseTableCreate">Crear tabla</button>
+          </form>
+          <div id="baseTablesList" class="integration-list"></div>
+        </article>
+        <article class="card glass" id="baseTableCard">
+          <div class="print-only" id="basePrintHead"><h1>Base</h1><p id="basePrintStamp"></p></div>
+          <div class="card-head"><h3 id="baseTableTitle">Selecciona una tabla</h3><span class="muted small" id="baseTableCount"></span></div>
+          <div class="row-actions" id="baseTableTools" hidden><button type="button" class="secondary small" id="baseExportCsv">Exportar CSV</button><button type="button" class="secondary small" id="baseExportXlsx">Exportar Excel</button><button type="button" class="secondary small" id="baseImportCsv">Importar CSV</button><input type="file" id="baseImportFile" accept=".csv,text/csv" hidden /><button type="button" class="ghost small" id="baseAddColumn">Añadir columna</button><button type="button" class="ghost small" id="baseRenameColumn">Renombrar columna</button><button type="button" class="ghost small" id="baseDeleteColumn">Eliminar columna</button><button type="button" class="ghost small" id="baseRenameTable">Renombrar</button><button type="button" class="ghost small" id="baseDeleteTable">Borrar tabla</button></div>
+          <div class="base-filter-bar" id="baseFilterBar" hidden>
+            <select id="baseFilterColumn" aria-label="Columna para filtrar"></select>
+            <select id="baseFilterOp" aria-label="Operador">
+              <option value="contains">contiene</option>
+              <option value="eq">es igual a</option>
+              <option value="neq">es distinto de</option>
+              <option value="gt">mayor que</option>
+              <option value="gte">mayor o igual</option>
+              <option value="lt">menor que</option>
+              <option value="lte">menor o igual</option>
+            </select>
+            <input id="baseFilterValue" maxlength="200" placeholder="Valor" autocomplete="off" />
+            <button type="button" class="secondary small" id="baseFilterApply">Aplicar</button>
+            <button type="button" class="ghost small" id="baseFilterClear">Limpiar</button>
+            <button type="button" class="ghost small" id="baseSaveView">Guardar vista</button>
+          </div>
+          <div class="chips" id="baseViews" hidden></div>
+          <form id="baseRowForm" class="form-grid" hidden>
+            <div id="baseRowFields" class="form-grid"></div>
+            <div class="row-actions">
+              <button type="submit" class="primary" id="baseRowSave">Añadir fila</button>
+              <button type="button" class="secondary" id="baseRowCancel" hidden>Cancelar</button>
+            </div>
+          </form>
+          <div id="baseRows"></div>
+        </article>
+      </div>
+    </section>
+    <!-- ===================== Estilo ===================== -->
+    <section id="view-style" class="view" aria-labelledby="styleTitle">
+      <div class="section-title">
+        <div><h2 id="styleTitle">Estilo</h2><p>Tu forma de escribir: importa muestras, mira tu perfil, puntúa un borrador y redacta «como yo».</p></div>
+        <div class="head-actions"><span id="styleMeta" class="muted small"></span></div>
+      </div>
+      <div class="grid two-col">
+        <article class="card glass">
+          <div class="card-head"><h3>Importar muestras</h3><span class="muted small">Pega correos reales</span></div>
+          <form id="styleSampleForm" class="form-grid">
+            <label class="field"><span>Registro</span><select name="register" id="styleSampleRegister"></select><small class="hint">Cliente, proveedor, entidad, colega o familiar.</small></label>
+            <label class="field"><span>Muestras (sepáralas con una línea en blanco)</span><textarea name="text" rows="8" maxlength="20000" placeholder="Pega aquí tus correos…"></textarea></label>
+            <button type="submit" class="primary">Añadir muestras</button>
+          </form>
+          <p id="styleSampleStatus" class="hint" role="status"></p>
+        </article>
+        <article class="card glass">
+          <div class="card-head"><h3>Perfiles</h3><span class="muted small">Mínimo 10 muestras por registro</span></div>
+          <div id="styleProfiles" class="profile-list"></div>
+        </article>
+      </div>
+      <div class="grid two-col">
+        <article class="card glass">
+          <div class="card-head"><h3>Puntuar un borrador</h3></div>
+          <form id="styleScoreForm" class="form-grid">
+            <label class="field"><span>Registro</span><select name="register" id="styleScoreRegister"></select></label>
+            <label class="field"><span>Borrador</span><textarea name="text" rows="6" maxlength="20000" placeholder="Escribe o pega el texto…"></textarea></label>
+            <button type="submit" class="secondary">Ver puntuación</button>
+          </form>
+          <div id="styleScoreBox" class="score-box" aria-live="polite"></div>
+        </article>
+        <article class="card glass">
+          <div class="card-head"><h3>Redactar como yo</h3></div>
+          <form id="styleComposeForm" class="form-grid">
+            <label class="field"><span>Registro</span><select name="register" id="styleComposeRegister"></select></label>
+            <label class="field"><span>¿Qué quieres decir?</span><textarea name="intent" rows="3" maxlength="2000" required placeholder="Confirmar la reunión del viernes y pedir el acta"></textarea></label>
+            <label class="field"><span>Destinatario (nombre o correo)</span><input name="recipient" maxlength="200" placeholder="marta@empresa.com" /></label>
+            <button type="submit" class="primary">Redactar</button>
+          </form>
+          <div id="styleComposeBox" class="compose-box"></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===================== Avisos ===================== -->
+    <section id="view-nudges" class="view" aria-labelledby="nudgesTitle">
+      <div class="section-title">
+        <div><h2 id="nudgesTitle">Avisos</h2><p>Recordatorios priorizados con anti-spam y silencio nocturno. Máximo 3 asuntos por aviso.</p></div>
+        <div class="head-actions"><button type="button" class="secondary small" id="nudgeEvaluateBtn">Evaluar ahora (sin enviar)</button><button type="button" class="ghost small" id="nudgeRefresh">Actualizar</button></div>
+      </div>
+      <div class="grid two-col">
+        <article class="card glass">
+          <div class="card-head"><h3>Configuración</h3><span class="muted small" id="nudgeTargets"></span></div>
+          <form id="nudgeForm" class="form-grid">
+            <label class="field check"><input type="checkbox" name="enabled" /><span>Activar avisos</span></label>
+            <div class="two">
+              <label class="field"><span>Cada (min)</span><input name="cadenceMin" type="number" min="5" max="240" step="5" /></label>
+              <label class="field"><span>Máx. por hora</span><input name="maxPerHour" type="number" min="1" max="12" /></label>
+            </div>
+            <div class="three">
+              <label class="field"><span>Máx. por día</span><input name="maxPerDay" type="number" min="1" max="50" /></label>
+              <label class="field"><span>Enfriamiento (min)</span><input name="cooldownMin" type="number" min="0" max="1440" /></label>
+              <label class="field"><span>Máx. asuntos</span><input name="maxItems" type="number" min="1" max="3" /></label>
+            </div>
+            <label class="field check"><input type="checkbox" name="silenceEnabled" /><span>Silencio nocturno</span></label>
+            <div class="two">
+              <label class="field"><span>Desde</span><input name="silenceFrom" type="time" /></label>
+              <label class="field"><span>Hasta</span><input name="silenceTo" type="time" /></label>
+            </div>
+            <div class="chips-field"><span class="chips-label">Canales</span>
+              <div class="chips" role="group" aria-label="Canales de los avisos" id="nudgeChannels">
+                <button type="button" class="chip" data-nudge-channel="whatsapp" aria-pressed="false">WhatsApp</button>
+                <button type="button" class="chip" data-nudge-channel="telegram" aria-pressed="false">Telegram</button>
+                <button type="button" class="chip" data-nudge-channel="email" aria-pressed="false">Correo</button>
+              </div>
+            </div>
+            <div class="three">
+              <label class="field"><span>Hueco libre (min)</span><input name="freeGapMin" type="number" min="15" max="240" /></label>
+              <label class="field"><span>Sin responder (min)</span><input name="unansweredMin" type="number" min="5" max="1440" /></label>
+              <label class="field"><span>Antelación reuniones (min)</span><input name="meetingLookaheadMin" type="number" min="15" max="720" /></label>
+            </div>
+            <div class="two">
+              <label class="field"><span>Cierre diario</span><input name="closeCheckAt" type="time" /></label>
+              <label class="field"><span>Reporte diario</span><input name="reportAt" type="time" /></label>
+            </div>
+            <label class="field check"><input type="checkbox" name="llmEnabled" /><span>Redactar con el agente si hay LLM</span></label>
+            <label class="field check"><input type="checkbox" id="nudgeNotifyToggle" /><span>Avisarme en el navegador (este equipo)</span></label>
+            <p id="nudgeNotifyStatus" class="hint" role="status">Sin notificaciones del navegador.</p>
+            <button type="submit" class="primary">Guardar configuración</button>
+          </form>
+          <p id="nudgeConfigStatus" class="hint" role="status"></p>
+        </article>
+        <article class="card glass">
+          <div class="card-head"><h3>Avisos recientes</h3><label class="check small"><input type="checkbox" id="nudgeShowDismissed" /> Ver descartados</label></div>
+          <div id="nudgeFeed" class="nudge-list"></div>
+        </article>
+      </div>
+      <article class="card glass"><div class="card-head"><h3>Estado y contadores</h3></div><div id="nudgeStatus" class="status-bar"></div></article>
+    </section>
+
+    <nav class="bottom-nav glass" aria-label="Navegación rápida">
+      <button type="button" class="active" data-nav="home"><span aria-hidden="true">⌂</span><small>Inicio</small></button>
+      <button type="button" data-nav="agenda"><span aria-hidden="true">▦</span><small>Agenda</small></button>
+      <button type="button" class="plus" data-action="new" aria-label="Nueva cita">＋</button>
+      <button type="button" data-nav="assistant"><span aria-hidden="true">✦</span><small>Asistente</small></button>
+      <button type="button" data-nav="integrations"><span aria-hidden="true">⚙</span><small>Ajustes</small></button>
+    </nav>
+  </main>
+
+  <!-- ===================== Diálogo: cita ===================== -->
+  <dialog id="dlg-event" class="modal glass" aria-labelledby="eventTitle">
+    <form id="eventForm" novalidate>
+      <div class="modal-head">
+        <h3 id="eventTitle">Nueva cita</h3>
+        <button type="button" class="icon-btn small" data-close aria-label="Cerrar">×</button>
+      </div>
+      <div class="modal-body">
+        <div id="eventAlert" class="alert" role="alert" hidden></div>
+        <label class="field">
+          <span>Actividad *</span>
+          <input name="title" required maxlength="200" autocomplete="off" placeholder="Reunión, llamada, bloque de foco…" />
+          <small class="hint">Un nombre concreto se entiende mejor en la agenda y en los recordatorios.</small>
+        </label>
+        <div class="chips-field">
+          <span class="chips-label">Tipo</span>
+          <div class="chips" role="group" aria-label="Tipo de actividad" id="eventTypeChips">
+            <button type="button" class="chip" data-type="Compromiso" aria-pressed="false">Compromiso</button>
+            <button type="button" class="chip" data-type="Reunión" aria-pressed="false">Reunión</button>
+            <button type="button" class="chip" data-type="Foco" aria-pressed="false">Foco</button>
+            <button type="button" class="chip" data-type="Administrativo" aria-pressed="false">Administrativo</button>
+            <button type="button" class="chip" data-type="Reporte" aria-pressed="false">Reporte</button>
+          </div>
+        </div>
+        <div class="two">
+          <label class="field"><span>Inicio *</span><input name="start" type="datetime-local" required /><small class="hint">Si pones una fecha imposible (31 feb) se rechaza con un mensaje claro.</small></label>
+          <label class="field"><span>Fin *</span><input name="end" type="datetime-local" required /><small class="hint" id="eventDurationHint">Se guarda en tu zona horaria.</small></label>
+        </div>
+        <div class="chips-field">
+          <span class="chips-label">Duración rápida</span>
+          <div class="chips" role="group" aria-label="Duración rápida" id="eventDurationChips">
+            <button type="button" class="chip" data-min="15">15 min</button>
+            <button type="button" class="chip" data-min="30">30 min</button>
+            <button type="button" class="chip" data-min="45">45 min</button>
+            <button type="button" class="chip" data-min="60">1 h</button>
+            <button type="button" class="chip" data-min="90">1 h 30</button>
+            <button type="button" class="chip" data-min="120">2 h</button>
+          </div>
+        </div>
+        <div class="three">
+          <label class="field"><span>Prioridad</span>
+            <select name="priority"><option>P1</option><option selected>P2</option><option>P3</option></select>
+            <small class="hint">P1 = hoy no se mueve.</small>
+          </label>
+          <label class="field"><span>Energía</span>
+            <select name="energy"><option selected>Media</option><option>Alta</option><option>Baja</option></select>
+          </label>
+          <label class="field"><span>Recordatorio (min)</span>
+            <input name="reminderMin" type="number" min="0" max="1440" step="5" value="10" />
+          </label>
+        </div>
+        <div class="two">
+          <label class="field"><span>Impacto (1–5)</span><input name="impact" type="range" min="1" max="5" step="1" value="3" /><small class="hint" id="impactHint">Impacto 3</small></label>
+          <label class="field"><span>Urgencia (1–5)</span><input name="urgency" type="range" min="1" max="5" step="1" value="3" /><small class="hint" id="urgencyHint">Urgencia 3</small></label>
+        </div>
+        <label class="field check"><input type="checkbox" name="deepFocus" /><span>Bloque de foco profundo</span><small class="hint">Sin interrupciones: cuenta para tu meta diaria de foco.</small></label>
+        <label class="field"><span>Resultado esperado</span><input name="result" maxlength="500" placeholder="¿Qué debe existir al terminar?" /><small class="hint">Evita citas sin salida concreta.</small></label>
+        <div class="two">
+          <label class="field"><span>Contexto / lugar</span><input name="context" maxlength="200" placeholder="Oficina, Meet, móvil…" /></label>
+          <label class="field"><span>Notas</span><input name="notes" maxlength="2000" placeholder="Detalles, enlaces, preparación…" /></label>
+        </div>
+        <div class="two">
+          <label class="field"><span>Lugar (viajes)</span><input name="location" maxlength="200" list="eventPlaceList" placeholder="Oficina Cali" autocomplete="off" /><datalist id="eventPlaceList"></datalist><small class="hint">Con un lugar puedo comprobar si llegas a tiempo.</small></label>
+          <label class="field"><span>Modo de viaje</span><select name="travelMode"><option value="auto">Automático</option><option value="urbano">Urbano</option><option value="mixto">Mixto</option><option value="carretera">Carretera</option></select></label>
+        </div>
+        <label class="field"><span>Invitados (correos separados por coma)</span><input name="attendees" maxlength="500" placeholder="ana@empresa.com, luis@empresa.com" /><small class="hint">Sirven para el Meet y para la identidad de la oficina.</small></label>
+        <section id="eventTravelBox" class="event-travel" hidden aria-label="Factibilidad del viaje">
+          <div class="card-head"><b>Viaje de esta cita</b><div class="head-actions"><button type="button" class="ghost small" id="eventTravelCheck">Comprobar viaje</button><button type="button" class="secondary small" id="eventMeetBtn">Generar Meet</button></div></div>
+          <div id="eventTravelInfo" class="travel-result"></div>
+          <p id="eventMeetInfo" class="hint" role="status"></p>
+        </section>
+        <section id="eventAlternatives" class="alternatives" hidden aria-label="Alternativas de horario">
+          <div class="card-head"><b>Horarios libres reales</b><button type="button" class="ghost small" id="eventFindSlots">Buscar alternativas</button></div>
+          <div id="eventSlots" class="slots"></div>
+          <div class="alternatives-actions">
+            <button type="button" class="secondary small" id="eventForce">Agendar de todas formas</button>
+            <label class="check small"><input type="checkbox" id="eventAllowUnverified" /> Agendar aunque Google no se pueda verificar</label>
+          </div>
+        </section>
+        <p class="muted tiny" id="eventMeta"></p>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="secondary" data-close>Cancelar</button>
+        <button type="submit" class="primary" id="eventSave">Guardar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ===================== Diálogo: completar ===================== -->
+  <dialog id="dlg-complete" class="modal glass" aria-labelledby="completeTitle">
+    <form id="completeForm">
+      <div class="modal-head">
+        <h3 id="completeTitle">Completar cita</h3>
+        <button type="button" class="icon-btn small" data-close aria-label="Cerrar">×</button>
+      </div>
+      <div class="modal-body">
+        <p class="muted small" id="completeSubtitle"></p>
+        <label class="field"><span>Minutos reales dedicados *</span><input name="actualMin" type="number" min="0" max="10080" required /><small class="hint">El modelo compara planificado vs real: sé honesto, sirve para calibrar.</small></label>
+        <label class="field"><span>Notas de cierre</span><textarea name="notes" rows="2" maxlength="2000" placeholder="Qué quedó hecho o pendiente"></textarea></label>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="secondary" data-close>Cancelar</button>
+        <button type="submit" class="primary">Marcar como hecha</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ===================== Diálogo: rutina ===================== -->
+  <dialog id="dlg-routine" class="modal glass wide" aria-labelledby="routineTitle">
+    <form id="routineForm" novalidate>
+      <div class="modal-head">
+        <h3 id="routineTitle">Nueva rutina</h3>
+        <button type="button" class="icon-btn small" data-close aria-label="Cerrar">×</button>
+      </div>
+      <div class="routine-layout">
+        <div class="modal-body">
+          <div id="routineAlert" class="alert" role="alert" hidden></div>
+          <label class="field">
+            <span>Nombre de la rutina *</span>
+            <input name="title" required maxlength="160" autocomplete="off" placeholder="Plan diario, Bloque de foco, Revisión semanal…" />
+            <small class="hint">Corto y accionable. Se usa para inferir si es plan, cierre o revisión.</small>
+          </label>
+          <div class="chips-field">
+            <span class="chips-label">¿Qué es?</span>
+            <div class="chips" role="group" aria-label="Tipo de rutina" id="routineKindChips">
+              <button type="button" class="chip" data-kind="recurrence" aria-pressed="true">Rutina recurrente</button>
+              <button type="button" class="chip" data-kind="meeting" aria-pressed="false">Reunión / cadencia</button>
+            </div>
+          </div>
+          <div class="chips-field">
+            <span class="chips-label">Frecuencia</span>
+            <div class="chips" role="group" aria-label="Frecuencia" id="routineFreqChips">
+              <button type="button" class="chip" data-freq="DIARIA">Diaria</button>
+              <button type="button" class="chip" data-freq="LABORABLES">Laborables</button>
+              <button type="button" class="chip" data-freq="SEMANAL">Semanal</button>
+              <button type="button" class="chip" data-freq="MENSUAL">Mensual</button>
+              <button type="button" class="chip" data-freq="TRIMESTRAL">Trimestral</button>
+            </div>
+            <small class="hint" id="freqHint">Laborables = lunes a viernes según tus ajustes.</small>
+          </div>
+          <div id="routineRuleWrap" hidden>
+            <div class="chips-field" id="routineWeekdayChipsWrap">
+              <span class="chips-label">Días de la semana</span>
+              <div class="chips" role="group" aria-label="Días de la semana" id="routineWeekdayChips">
+                <button type="button" class="chip" data-day="LUN">Lun</button>
+                <button type="button" class="chip" data-day="MAR">Mar</button>
+                <button type="button" class="chip" data-day="MIE">Mié</button>
+                <button type="button" class="chip" data-day="JUE">Jue</button>
+                <button type="button" class="chip" data-day="VIE">Vie</button>
+                <button type="button" class="chip" data-day="SAB">Sáb</button>
+                <button type="button" class="chip" data-day="DOM">Dom</button>
+              </div>
+            </div>
+            <label class="field" id="routineMonthDayWrap" hidden>
+              <span>Día del mes (1–31)</span>
+              <input name="monthDay" type="number" min="1" max="31" step="1" value="1" />
+              <small class="hint">Si el mes no tiene ese día se usa el último disponible (31 → 30/28).</small>
+            </label>
+          </div>
+          <div class="three">
+            <label class="field"><span>Hora *</span><input name="time" type="time" required value="09:00" /><small class="hint">Hora local de tu zona.</small></label>
+            <label class="field"><span>Duración (min) *</span><input name="durationMin" type="number" min="5" max="720" step="5" required value="30" /></label>
+            <label class="field"><span>Recordatorio (min)</span><input name="reminderMin" type="number" min="0" max="40320" step="5" value="10" /></label>
+          </div>
+          <div class="chips-field">
+            <span class="chips-label">Tipo de actividad</span>
+            <div class="chips" role="group" aria-label="Tipo de actividad" id="routineTypeChips">
+              <button type="button" class="chip" data-type="Foco">Foco</button>
+              <button type="button" class="chip" data-type="Administrativo">Administrativo</button>
+              <button type="button" class="chip" data-type="Reunión">Reunión</button>
+              <button type="button" class="chip" data-type="Reporte">Reporte</button>
+            </div>
+          </div>
+          <div class="three">
+            <label class="field"><span>Prioridad</span>
+              <select name="priority"><option>P1</option><option selected>P2</option><option>P3</option></select>
+            </label>
+            <label class="field"><span>Impacto</span><input name="impact" type="number" min="1" max="5" step="1" value="3" /></label>
+            <label class="field"><span>Urgencia</span><input name="urgency" type="number" min="1" max="5" step="1" value="3" /></label>
+          </div>
+          <label class="field"><span>Propósito</span><input name="purpose" maxlength="500" placeholder="¿Para qué existe esta rutina?" /><small class="hint">Una rutina sin propósito se vuelve ceremonia.</small></label>
+          <label class="field"><span>Resultado esperado</span><input name="result" maxlength="500" placeholder="¿Qué debe existir al terminar?" /><small class="hint">Si no puedes escribirlo, quizá no sea una rutina necesaria.</small></label>
+          <div class="two">
+            <label class="field"><span>Vigente desde</span><input name="startDate" type="date" /><small class="hint">Opcional. Vacío = desde hoy.</small></label>
+            <label class="field"><span>Vigente hasta</span><input name="endDate" type="date" /></label>
+          </div>
+          <fieldset class="field-group">
+            <legend>Canales y automatización</legend>
+            <label class="check"><input type="checkbox" name="whatsapp" checked /><span>Recordarme por WhatsApp/canal</span></label>
+            <label class="check"><input type="checkbox" name="calendar" checked /><span>Publicar en Google Calendar</span></label>
+            <label class="check"><input type="checkbox" name="skipHolidays" checked /><span>Saltar festivos configurados</span></label>
+            <label class="check"><input type="checkbox" name="deepFocus" /><span>Es foco profundo</span></label>
+          </fieldset>
+          <label class="field"><span>Rol en las métricas</span>
+            <select name="role">
+              <option value="">Automático (por nombre)</option>
+              <option value="plan">Plan diario</option>
+              <option value="close">Cierre diario</option>
+              <option value="weeklyReview">Revisión semanal</option>
+            </select>
+            <small class="hint">Define qué rutina cuenta como plan, cierre y revisión semanal en el índice P95.</small>
+          </label>
+          <label class="field"><span>Notas</span><textarea name="notes" rows="2" maxlength="2000" placeholder="Reglas propias, preparación, enlaces…"></textarea></label>
+        </div>
+        <aside class="routine-preview" aria-label="Vista previa de apariciones">
+          <div class="card-head"><b>Próximas 7 apariciones</b><span id="routinePreviewMeta" class="muted tiny"></span></div>
+          <div id="routinePreview" class="preview-list"></div>
+          <p class="hint">Se calculan en el servidor con tu zona horaria, festivos y excepciones, antes de guardar.</p>
+          <div class="preview-summary" id="routinePreviewSummary"></div>
+        </aside>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="secondary" data-close>Cancelar</button>
+        <button type="submit" class="primary" id="routineSave">Guardar rutina</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ===================== Diálogo: onboarding ===================== -->
+  <dialog id="dlg-onboarding" class="modal glass wide" aria-labelledby="wizardTitle">
+    <div class="modal-head">
+      <h3 id="wizardTitle">Configura tu Agenda Copilot</h3>
+      <button type="button" class="icon-btn small" data-close aria-label="Cerrar guía">×</button>
+    </div>
+    <div class="wizard">
+      <ol class="wizard-steps" id="wizardSteps"></ol>
+      <div class="wizard-body" id="wizardBody"></div>
+    </div>
+    <div class="modal-actions wizard-actions">
+      <button type="button" class="ghost" id="wizardSkip">Saltar por ahora</button>
+      <div class="spacer"></div>
+      <button type="button" class="secondary" id="wizardPrev">Atrás</button>
+      <button type="button" class="primary" id="wizardNext">Continuar</button>
+    </div>
+  </dialog>
+
+  <!-- ===================== Diálogo: cola offline ===================== -->
+  <dialog id="dlg-queue" class="modal glass" aria-labelledby="queueTitle">
+    <div class="modal-head">
+      <h3 id="queueTitle">Cola sin conexión</h3>
+      <button type="button" class="icon-btn small" data-close aria-label="Cerrar cola">×</button>
+    </div>
+    <div class="modal-body">
+      <p class="muted small">Capturas guardadas en este dispositivo. Se envían solas al recuperar la conexión.</p>
+      <div id="queueList" class="system-list"></div>
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="secondary" data-close>Cerrar</button>
+      <button type="button" class="primary" id="queueFlush">Sincronizar ahora</button>
+    </div>
+  </dialog>
+
+  <!-- ===================== Diálogo: confirmar ===================== -->
+
+  <!-- ===================== Diálogo: redactar correo ===================== -->
+  <dialog id="dlg-compose" class="modal glass wide" aria-labelledby="composeTitle">
+    <form id="composeForm" novalidate>
+      <div class="modal-head">
+        <h3 id="composeTitle">Redactar correo</h3>
+        <button type="button" class="icon-btn small" data-close aria-label="Cerrar">×</button>
+      </div>
+      <div class="modal-body">
+        <div id="composeAlert" class="alert" role="alert" hidden></div>
+        <label class="field"><span>Para *</span><input name="to" required maxlength="500" placeholder="correo@dominio.com" autocomplete="off" /></label>
+        <div class="head-actions"><button type="button" class="ghost small" id="composeExpand">Buscar destinatarios</button><span id="composePeople" class="muted small"></span></div>
+        <label class="field"><span>Asunto *</span><input name="subject" required maxlength="300" /></label>
+        <label class="field"><span>Mensaje *</span><textarea name="body" rows="9" maxlength="20000" required></textarea></label>
+        <p class="hint" id="composeHint">Se envía con tu cuenta de Gmail conectada. Si no está configurada, te lo diremos antes de enviar.</p>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="secondary" data-close>Cancelar</button>
+        <button type="submit" class="primary" id="composeSend">Enviar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ===================== Diálogo: enviar documento ===================== -->
+  <dialog id="dlg-send-doc" class="modal glass" aria-labelledby="sendDocTitle">
+    <form id="sendDocForm" novalidate>
+      <div class="modal-head">
+        <h3 id="sendDocTitle">Enviar documento</h3>
+        <button type="button" class="icon-btn small" data-close aria-label="Cerrar">×</button>
+      </div>
+      <div class="modal-body">
+        <div id="sendDocAlert" class="alert" role="alert" hidden></div>
+        <p class="muted small" id="sendDocMeta"></p>
+        <label class="field"><span>Canal</span><select name="channel" id="sendDocChannel"><option value="email">Correo</option><option value="whatsapp">WhatsApp</option><option value="telegram">Telegram</option><option value="simulator">Simulador</option></select></label>
+        <label class="field"><span>Destinatarios</span><input name="to" maxlength="500" placeholder="correo@dominio.com o chat/número" /><small class="hint">Para correo, separa varios con coma.</small></label>
+        <div class="head-actions"><button type="button" class="ghost small" id="sendDocExpand">Buscar destinatario</button><span id="sendDocPeople" class="muted small"></span></div>
+        <label class="field"><span>Asunto</span><input name="subject" maxlength="300" /></label>
+        <label class="field"><span>Mensaje</span><textarea name="body" rows="4" maxlength="2000"></textarea></label>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="secondary" data-close>Cancelar</button>
+        <button type="submit" class="primary" id="sendDocBtn">Enviar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ===================== Diálogo: mensaje por canal ===================== -->
+  <dialog id="dlg-channel-msg" class="modal glass" aria-labelledby="channelMsgTitle">
+    <form id="channelMsgForm" novalidate>
+      <div class="modal-head">
+        <h3 id="channelMsgTitle">Enviar mensaje</h3>
+        <button type="button" class="icon-btn small" data-close aria-label="Cerrar">×</button>
+      </div>
+      <div class="modal-body">
+        <div id="channelMsgAlert" class="alert" role="alert" hidden></div>
+        <p class="muted small" id="channelMsgMeta"></p>
+        <label class="field"><span>Destinatario *</span><input name="to" required maxlength="200" placeholder="correo@dominio.com, chat id o número" /></label>
+        <label class="field"><span>Asunto (solo correo)</span><input name="subject" maxlength="300" /></label>
+        <label class="field"><span>Mensaje *</span><textarea name="body" rows="6" maxlength="20000" required></textarea></label>
+        <p class="hint">Los mensajes a terceros se preparan como propuesta N2: nada sale hasta que la apruebes y ejecutes en la Oficina. Los avisos al dueño siguen siendo directos.</p>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="secondary" data-close>Cancelar</button>
+        <button type="submit" class="primary" id="channelMsgSend">Preparar envío</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="dlg-confirm" class="modal glass" aria-labelledby="confirmTitle">
+    <div class="modal-head">
+      <h3 id="confirmTitle">Confirmar</h3>
+      <button type="button" class="icon-btn small" data-close aria-label="Cerrar">×</button>
+    </div>
+    <div class="modal-body">
+      <p id="confirmText" class="muted"></p>
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="secondary" id="confirmCancel">Cancelar</button>
+      <button type="button" class="primary" id="confirmOk">Confirmar</button>
+    </div>
+  </dialog>
+
+  <!-- ===================== Diálogo: entrada de texto ===================== -->
+  <dialog id="dlg-prompt" class="modal glass" aria-labelledby="promptTitle">
+    <form id="promptForm">
+      <div class="modal-head">
+        <h3 id="promptTitle">Escribe un valor</h3>
+        <button type="button" class="icon-btn small" data-close aria-label="Cerrar">×</button>
+      </div>
+      <div class="modal-body">
+        <p id="promptText" class="muted small"></p>
+        <label class="field"><span id="promptLabel">Valor</span><input name="value" required autocomplete="off" /></label>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="secondary" data-close>Cancelar</button>
+        <button type="submit" class="primary">Aceptar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ===================== Diálogo: revisar propuesta ===================== -->
+  <dialog id="dlg-proposal-edit" class="modal glass" aria-labelledby="proposalEditTitle">
+    <form id="proposalEditForm">
+      <div class="modal-head">
+        <h3 id="proposalEditTitle">Revisar propuesta</h3>
+        <button type="button" class="icon-btn small" data-close aria-label="Cerrar">×</button>
+      </div>
+      <div class="modal-body">
+        <p class="muted small">El texto nuevo se evalúa otra vez: el riesgo puede subir y la aprobación anterior deja de valer. Nada se envía sin tu visto bueno.</p>
+        <label class="field"><span>Asunto</span><input name="subject" maxlength="250" autocomplete="off" /></label>
+        <label class="field"><span>Cuerpo</span><textarea name="body" rows="10" maxlength="20000" required></textarea></label>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="secondary" data-close>Cancelar</button>
+        <button type="submit" class="primary" id="proposalEditSave">Guardar y pedir aprobación</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ===================== Puerta de autenticación ===================== -->
+  <div id="authGate" class="auth-gate" hidden>
+    <div class="card glass auth-card" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+      <h2 id="authTitle">Entrar en Agenda Copilot</h2>
+      <p class="muted small" id="authHelp">Este servidor exige una sesión. Tu contraseña se guarda cifrada con scrypt.</p>
+      <form id="loginForm" class="form-grid" hidden>
+        <label class="field"><span>Usuario</span><input name="username" autocomplete="username" value="owner" /></label>
+        <label class="field"><span>Contraseña</span><input name="password" type="password" autocomplete="current-password" required minlength="8" /></label>
+        <button type="submit" class="primary">Entrar</button>
+      </form>
+      <form id="setupForm" class="form-grid" hidden>
+        <label class="field"><span>Usuario</span><input name="username" autocomplete="username" value="owner" /></label>
+        <label class="field"><span>Contraseña (mín. 8)</span><input name="password" type="password" autocomplete="new-password" required minlength="8" /></label>
+        <label class="field"><span>Token de instalación (si se pide)</span><input name="setupToken" autocomplete="off" /><small class="hint">Solo se necesita cuando el servidor escucha en red.</small></label>
+        <button type="submit" class="primary">Crear cuenta</button>
+      </form>
+      <p id="authError" class="alert" role="alert" hidden></p>
+    </div>
+  </div>
+
+  <dialog id="dlg-global-search" class="modal glass" aria-labelledby="globalSearchTitle">
+    <div class="card-head">
+      <h2 id="globalSearchTitle">Buscar en todo</h2>
+      <button type="button" class="icon-btn small" id="globalSearchClose" aria-label="Cerrar búsqueda">×</button>
+    </div>
+    <label class="field">
+      <span class="sr-only">Buscar en agenda, tareas, rutinas, documentos, wiki y tablas</span>
+      <input id="globalSearchInput" type="search" maxlength="80" placeholder="Escribe una persona, un acta, una tarea…" autocomplete="off" />
+    </label>
+    <p id="globalSearchHint" class="hint" role="status">Escribe al menos 2 letras.</p>
+    <div id="globalSearchFilters" class="filters" role="group" aria-label="Filtrar resultados por sección">
+      <button type="button" class="chip active" data-search-filter="all" aria-pressed="true">Todo</button>
+      <button type="button" class="chip" data-search-filter="agenda" aria-pressed="false">Agenda</button>
+      <button type="button" class="chip" data-search-filter="tasks" aria-pressed="false">Tareas</button>
+      <button type="button" class="chip" data-search-filter="routines" aria-pressed="false">Rutinas</button>
+      <button type="button" class="chip" data-search-filter="docs" aria-pressed="false">Documentos</button>
+      <button type="button" class="chip" data-search-filter="wiki" aria-pressed="false">Wiki</button>
+      <button type="button" class="chip" data-search-filter="people" aria-pressed="false">Personas</button>
+      <button type="button" class="chip" data-search-filter="approvals" aria-pressed="false">Aprobaciones</button>
+      <button type="button" class="chip" data-search-filter="base" aria-pressed="false">Tablas</button>
+    </div>
+    <div id="globalSearchResults" class="search-results"></div>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- Dictado por voz global -->
+  <div id="voiceDock" class="voice-dock">
+    <span id="voiceStatus" class="voice-status" role="status" hidden></span>
+    <button type="button" id="voiceFab" class="voice-fab" aria-label="Dictado por voz" aria-pressed="false" title="Dictar en el campo activo · di «nueva cita», «hoy» o «captura …»">🎙</button>
+  </div>
+  <script type="module" src="/app.js"></script>
+  <script type="module" src="/js/theme-init.js"></script>
+  <noscript><p class="noscript">Agenda Copilot necesita JavaScript para funcionar.</p></noscript>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

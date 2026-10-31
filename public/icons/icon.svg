@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Agenda Copilot P95">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2a9c84"/>
+      <stop offset="0.55" stop-color="#176b59"/>
+      <stop offset="1" stop-color="#0d4b3f"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.96"/>
+      <stop offset="1" stop-color="#e6f4ee" stop-opacity="0.86"/>
+    </linearGradient>
+    <linearGradient id="spark" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#9fe6d3"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <rect x="96" y="120" width="320" height="288" rx="56" fill="url(#glass)" opacity="0.16"/>
+  <rect x="128" y="152" width="256" height="232" rx="40" fill="url(#glass)" opacity="0.96"/>
+  <rect x="128" y="152" width="256" height="56" rx="28" fill="#0d4b3f"/>
+  <circle cx="176" cy="132" r="14" fill="#eafff6"/>
+  <circle cx="336" cy="132" r="14" fill="#eafff6"/>
+  <rect x="164" y="238" width="88" height="20" rx="10" fill="#176b59" opacity="0.88"/>
+  <rect x="164" y="286" width="150" height="20" rx="10" fill="#176b59" opacity="0.62"/>
+  <rect x="164" y="334" width="112" height="20" rx="10" fill="#176b59" opacity="0.44"/>
+  <path d="M356 268 l26 52 52 26 -52 26 -26 52 -26 -52 -52 -26 52 -26z" fill="url(#spark)" opacity="0.95"/>
+  <circle cx="356" cy="346" r="10" fill="#ffffff" opacity="0.9"/>
+</svg>

@@ -1,0 +1,20 @@
+# No hornear en la imagen nada sensible ni datos reales.
+.git
+.gitignore
+.github
+.agent-teams
+.env
+.env.*
+!.env.example
+data
+node_modules
+tests
+*.log
+*.tmp
+*.bak
+*.corrupt
+AUDITORIA_TECNICA_2026-10-27.md
+FUNCTIONAL_MATRIX.md
+*.md
+!README.md
+!docs/**/*.md

@@ -1,0 +1,28 @@
+{
+  "name": "agenda-copilot-p95",
+  "version": "1.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Agenda P95 + asistente móvil con Google Calendar/Gmail, WhatsApp y Telegram.",
+  "scripts": {
+    "start": "node start.mjs",
+    "dev": "node --watch start.mjs",
+    "check": "node scripts/check-syntax.mjs",
+    "test": "node scripts/run-tests.mjs",
+    "test:unit": "node --test tests/**/*.test.mjs",
+    "selfchecks": "node scripts/selfchecks.mjs",
+    "smoke": "node scripts/smoke.mjs",
+    "docker:build": "docker build -t agenda-copilot-p95:local .",
+    "docker:run": "docker compose up --build",
+    "e2e:regression": "node scripts/regression-e2e.mjs",
+    "selfchecks:core": "node lib/agenda/selfcheck.mjs && node lib/channel/selfcheck.mjs && node lib/llm/selftest.mjs",
+    "verify:voice": "node scripts/verify-telegram-voice.mjs",
+    "verify:motion": "node scripts/verify-home-motion.mjs",
+    "verify:studio": "node scripts/verify-studio-org.mjs"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}
+
+

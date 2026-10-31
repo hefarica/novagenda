@@ -1,0 +1,41 @@
+# Agenda Copilot P95 — ejecución local con Docker (t6)
+# Uso:
+#   1) Copia .env.example a .env y define APP_SECRET (obligatorio) y,
+#      para el primer setup, APP_SETUP_TOKEN.
+#   2) docker compose up --build
+#   3) Abre http://127.0.0.1:3000 (la app pedirá crear usuario:
+#      usa el APP_SETUP_TOKEN configurado).
+services:
+  agenda:
+    build: .
+    image: agenda-copilot-p95:local
+    container_name: agenda-copilot-p95
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3000:3000"
+    environment:
+      NODE_ENV: production
+      PORT: "3000"
+      APP_HOST: 0.0.0.0
+      HOST: 0.0.0.0
+      DATA_DIR: /app/data
+      TIMEZONE: ${TIMEZONE:-America/Bogota}
+      # Sin APP_SECRET no arranca: la bóveda y las sesiones lo necesitan.
+      APP_SECRET: ${APP_SECRET:?Define APP_SECRET en .env antes de docker compose}
+      # Necesario para crear el primer usuario desde fuera del contenedor.
+      APP_SETUP_TOKEN: ${APP_SETUP_TOKEN:-}
+      # Integraciones opcionales (bóveda o .env):
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+      LLM_PROVIDER: ${LLM_PROVIDER:-}
+      OPENAI_BASE_URL: ${OPENAI_BASE_URL:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+    volumes:
+      - ./data:/app/data
+    healthcheck:
+      test: ["CMD", "node", "-e", "const http=require('node:http');const port=process.env.PORT||3000;const req=http.get({host:'127.0.0.1',port,path:'/api/health',timeout:4000},(res)=>{res.resume();res.on('end',()=>process.exit(res.statusCode===200?0:1));});req.on('timeout',()=>{req.destroy();process.exit(1);});req.on('error',()=>process.exit(1));"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s

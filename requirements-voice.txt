@@ -1,0 +1,5 @@
+# Transcripción local de notas de voz (modelo Whisper en CPU).
+# Instalar una vez:  python -m pip install -r requirements-voice.txt
+# El modelo se descarga la primera vez y queda en la caché de Hugging Face.
+faster-whisper==1.2.1
+huggingface_hub>=1.0,<2
